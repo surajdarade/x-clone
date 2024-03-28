@@ -154,9 +154,26 @@ export const getMyProfile = async (req: Request, res: Response) => {
   try {
     const loggedInUserId = req.params.id;
 
-    const user = await UserModel.findById({ _id: loggedInUserId }).select("-password");
+    const user = await UserModel.findById({ _id: loggedInUserId }).select(
+      "-password"
+    );
 
     return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOtherUsers = async (req: Request, res: Response) => {
+  try {
+    const {id} = req.params;
+    const otherUsers = await UserModel.find({_id: {$ne: id}}).select('-password');
+
+    if(!otherUsers){
+      res.status(401).json({message: "No users found!"});
+    }
+
+    return res.status(200).json({otherUsers});
   } catch (error) {
     console.log(error);
   }
