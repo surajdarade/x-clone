@@ -164,17 +164,51 @@ export const getMyProfile = async (req: Request, res: Response) => {
   }
 };
 
+// GET OTHER USERS CONTROLLER
 export const getOtherUsers = async (req: Request, res: Response) => {
   try {
-    const {id} = req.params;
-    const otherUsers = await UserModel.find({_id: {$ne: id}}).select('-password');
+    const { id } = req.params;
+    const otherUsers = await UserModel.find({ _id: { $ne: id } }).select(
+      "-password"
+    );
 
-    if(!otherUsers){
-      res.status(401).json({message: "No users found!"});
+    if (!otherUsers) {
+      res.status(401).json({ message: "No users found!" });
     }
 
-    return res.status(200).json({otherUsers});
+    return res.status(200).json({ otherUsers });
   } catch (error) {
     console.log(error);
+  }
+};
+
+// FOLLOW CONTROLLER
+
+export const follow = async (req: Request, res: Response) => {
+  try {
+    const loggedInUserId = req.body.id;
+    const idOfUserToFollow = req.params.id;
+
+    const loggedInUser = await UserModel.findById(loggedInUserId);
+    const user = await UserModel.findById(idOfUserToFollow);
+
+    if (!user) {
+      return res.status(404).json({ message: "User to follow not found" });
+    }
+
+    if (!loggedInUser) {
+      return res.status(404).json({ message: "Logged-in user not found" });
+    }
+
+    if (!user.followers.includes(loggedInUserId)) {
+      await user.updateOne({ $push: { followers: loggedInUserId } });
+      await loggedInUser.updateOne({ $push: { following: idOfUserToFollow } });
+      return res.status(200).json({ message: `You started following @${user.username}` });
+    } else {
+      return res.status(400).json({ message: `You are already following @${user.username}`, success: true});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
