@@ -212,3 +212,38 @@ export const follow = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// UNFOLLOW CONTROLLER
+
+export const unfollow = async (req: Request, res: Response) => {
+  try {
+    const loggedInUserId = req.body.id;
+    const idOfUserToUnFollow = req.params.id;
+
+    // Convert string ID to ObjectId
+    const objectIdUserId = new mongoose.Types.ObjectId(loggedInUserId);
+    const objectIdUserToUnFollow = new mongoose.Types.ObjectId(idOfUserToUnFollow);
+
+    const loggedInUser = await UserModel.findById(objectIdUserId);
+    const user = await UserModel.findById(objectIdUserToUnFollow);
+
+    if (!user) {
+      return res.status(404).json({ message: "User to unfollow not found" });
+    }
+
+    if (!loggedInUser) {
+      return res.status(404).json({ message: "Logged-in user not found" });
+    }
+
+    if (loggedInUser.following.includes(objectIdUserToUnFollow)) {
+      await user.updateOne({ $pull: { followers: objectIdUserId } });
+      await loggedInUser.updateOne({ $pull: { following: objectIdUserToUnFollow } });
+      return res.status(200).json({ message: `You stopped following @${user.username}` });
+    } else {
+      return res.status(400).json({ message: `You are not following @${user.username}`, success: true });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
