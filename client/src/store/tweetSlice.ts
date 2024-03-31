@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface TweetState {
   tweets: Tweet[] | null;
-  refresh: boolean
+  refresh: boolean;
+  isActive: boolean;
 }
 
 export interface UserDetails {
@@ -23,7 +24,8 @@ interface Tweet {
 
 const initialState: TweetState = {
   tweets: null,
-  refresh: false
+  refresh: false,
+  isActive: false,
 };
 
 const tweetSlice = createSlice({
@@ -35,10 +37,13 @@ const tweetSlice = createSlice({
     },
     getRefresh: (state) => {
       state.refresh = !state.refresh;
-    }
+    },
+    getIsActive: (state, action: PayloadAction<boolean>) => {
+      state.isActive = action.payload;
+    },
   },
 });
 
-export const { getAllTweets, getRefresh } = tweetSlice.actions;
+export const { getAllTweets, getRefresh, getIsActive } = tweetSlice.actions;
 
 export default tweetSlice.reducer;
