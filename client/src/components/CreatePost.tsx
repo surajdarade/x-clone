@@ -5,12 +5,15 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../store/userSlice";
-import { getRefresh } from "../store/tweetSlice";
+import { getIsActive, getRefresh, TweetState } from "../store/tweetSlice";
 
 const CreatePost = () => {
   const [description, setDescription] = useState("");
 
   const { user } = useSelector((store: { user: UserState }) => store.user);
+
+  const { isActive } = useSelector((store: { tweet: TweetState }) => store.tweet);
+
 
   const dispatch = useDispatch();
 
@@ -30,16 +33,30 @@ const CreatePost = () => {
     }
     setDescription("");
   };
+
+  const forYouToggle = () => {
+    dispatch(getIsActive(true));
+  };
+  const followingToggle = () => {
+    dispatch(getIsActive(false));
+  };
+
   return (
     <>
       <Toaster />
       <div className="w-[100%]">
         <div>
           <div className="flex items-center justify-evenly border-b border-gray-200">
-            <div className="cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3">
+            <div
+              onClick={forYouToggle}
+              className={`${isActive ? "border-b-4 border-[#1D98F0]" : "border-b-4 border-transparent"} cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3`}
+            >
               <h1 className="font-semibold text-gray-800 text-lg">For You</h1>
             </div>
-            <div className="cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3">
+            <div
+              onClick={followingToggle}
+              className={`${!isActive ? "border-b-4 border-[#1D98F0]" : "border-b-4 border-transparent"} cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3`}
+            >
               <h1 className="font-semibold text-gray-800 text-lg">Following</h1>
             </div>
           </div>
