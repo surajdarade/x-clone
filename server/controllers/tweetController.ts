@@ -58,7 +58,9 @@ export const likeOrDislike = async (req: Request, res: Response) => {
       await TweetModel.findByIdAndUpdate(tweetId, {
         $pull: { like: loggedInUserId },
       });
-      return res.status(200).json({ message: "Tweet Disliked!", success: true });
+      return res
+        .status(200)
+        .json({ message: "Tweet Disliked!", success: true });
     } else {
       await TweetModel.findByIdAndUpdate(tweetId, {
         $push: { like: loggedInUserId },
@@ -92,9 +94,9 @@ export const getAllTweets = async (req: Request, res: Response) => {
       })
     );
 
-    const allTweets = loggedInUserTweets.concat(...followingUserTweets);
-
-    return res.status(200).json({ tweets: allTweets });
+    return res
+      .status(200)
+      .json({ tweets: loggedInUserTweets.concat(...followingUserTweets) });
   } catch (error) {
     console.log(error);
   }
@@ -118,7 +120,10 @@ export const getFollowingTweets = async (req: Request, res: Response) => {
       })
     );
 
-    return res.status(200).json({ tweets: followingUserTweets });
+    return res
+  .status(200)
+  .json({ tweets: ([] as any[]).concat(...followingUserTweets) });
+
   } catch (error) {
     console.log(error);
   }
