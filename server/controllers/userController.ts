@@ -6,10 +6,8 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-// Resolve the absolute path to the .env file
 const envPath = path.resolve(__dirname, "../.env");
 
-// Load environment variables from the .env file
 dotenv.config({ path: envPath });
 
 // SIGNUP CONTROLLER
@@ -18,21 +16,18 @@ export const SignUp = async (req: Request, res: Response) => {
     const { name, username, email, password } = req.body;
     if (!name || !username || !email || !password) {
       return res.status(401).json({
-        message: "Please fill all fields",
+        message: "Please fill all fields!",
         success: false,
       });
     }
 
     const user = await UserModel.findOne({
-      $or: [
-        { email: email }, // Check if email matches
-        { username: username }, // Check if username matches
-      ],
+      $or: [{ email: email }, { username: username }],
     });
 
     if (user) {
       return res.status(401).json({
-        message: "Email or Username is already in use",
+        message: "Email or Username is already in use!",
         success: false,
       });
     }
@@ -62,7 +57,7 @@ export const SignIn = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(401).json({
-        message: "Please fill all fields",
+        message: "Please fill all fields!",
         success: false,
       });
     }
@@ -71,7 +66,7 @@ export const SignIn = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(401).json({
-        message: "Invalid Credentials",
+        message: "Invalid Credentials!",
         success: false,
       });
     }
@@ -80,7 +75,7 @@ export const SignIn = async (req: Request, res: Response) => {
 
     if (!isMatch) {
       return res.status(401).json({
-        message: "Invalid Credentials",
+        message: "Invalid Credentials!",
         success: false,
       });
     }
@@ -101,7 +96,11 @@ export const SignIn = async (req: Request, res: Response) => {
     return res
       .status(201)
       .cookie("token", token, { expires: expirationDate, httpOnly: true })
-      .json({ message: `Welcome User @${user.username}`, success: true });
+      .json({
+        message: `Welcome User @${user.username} !`,
+        user,
+        success: true,
+      });
   } catch (error) {
     console.log(error);
   }
@@ -112,7 +111,7 @@ export const SignIn = async (req: Request, res: Response) => {
 export const Logout = (req: Request, res: Response) => {
   return res
     .cookie("token", "", { expires: new Date(Date.now()) })
-    .json({ message: "Logged out succefully", success: true });
+    .json({ message: "Logged out succefully!", success: true });
 };
 
 // BOOKMARKS CONTROLLER
@@ -152,13 +151,15 @@ export const bookmark = async (req: Request, res: Response) => {
 
 export const getMyProfile = async (req: Request, res: Response) => {
   try {
-    const loggedInUserId = req.params.id;
+    const loggedInUserId = req.params._id;
 
     const user = await UserModel.findById({ _id: loggedInUserId }).select(
       "-password"
     );
 
-    return res.status(200).json({ user });
+    return res.status(200).json({
+      profile: user,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -167,9 +168,9 @@ export const getMyProfile = async (req: Request, res: Response) => {
 // GET OTHER USERS CONTROLLER
 export const getOtherUsers = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const otherUsers = await UserModel.find({ _id: { $ne: id } }).select(
-      "-password"
+    const { _id } = req.params;
+    const otherUsers = await UserModel.find({ _id: { $ne: _id } }).select(
+      "-password -bookmarks"
     );
 
     if (!otherUsers) {
@@ -193,23 +194,27 @@ export const follow = async (req: Request, res: Response) => {
     const user = await UserModel.findById(idOfUserToFollow);
 
     if (!user) {
-      return res.status(404).json({ message: "User to follow not found" });
+      return res.status(404).json({ message: "User to follow not found!" });
     }
 
     if (!loggedInUser) {
-      return res.status(404).json({ message: "Logged-in user not found" });
+      return res.status(404).json({ message: "Logged-in user not found!" });
     }
 
     if (!user.followers.includes(loggedInUserId)) {
       await user.updateOne({ $push: { followers: loggedInUserId } });
       await loggedInUser.updateOne({ $push: { following: idOfUserToFollow } });
-      return res.status(200).json({ message: `You started following @${user.username}` });
+      return res
+        .status(200)
+        .json({ message: `You started following @${user.username} !` });
     } else {
-      return res.status(400).json({ message: `You are already following @${user.username}`, success: true});
+      return res.status(400).json({
+        message: `You are already following @${user.username} !`,
+        success: true,
+      });
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -222,28 +227,36 @@ export const unfollow = async (req: Request, res: Response) => {
 
     // Convert string ID to ObjectId
     const objectIdUserId = new mongoose.Types.ObjectId(loggedInUserId);
-    const objectIdUserToUnFollow = new mongoose.Types.ObjectId(idOfUserToUnFollow);
+    const objectIdUserToUnFollow = new mongoose.Types.ObjectId(
+      idOfUserToUnFollow
+    );
 
     const loggedInUser = await UserModel.findById(objectIdUserId);
     const user = await UserModel.findById(objectIdUserToUnFollow);
 
     if (!user) {
-      return res.status(404).json({ message: "User to unfollow not found" });
+      return res.status(404).json({ message: "User to unfollow not found!" });
     }
 
     if (!loggedInUser) {
-      return res.status(404).json({ message: "Logged-in user not found" });
+      return res.status(404).json({ message: "Logged-in user not found!" });
     }
 
     if (loggedInUser.following.includes(objectIdUserToUnFollow)) {
       await user.updateOne({ $pull: { followers: objectIdUserId } });
-      await loggedInUser.updateOne({ $pull: { following: objectIdUserToUnFollow } });
-      return res.status(200).json({ message: `You stopped following @${user.username}` });
+      await loggedInUser.updateOne({
+        $pull: { following: objectIdUserToUnFollow },
+      });
+      return res
+        .status(200)
+        .json({ message: `You stopped following @${user.username} !` });
     } else {
-      return res.status(400).json({ message: `You are not following @${user.username}`, success: true });
+      return res.status(400).json({
+        message: `You are not following @${user.username} !`,
+        success: true,
+      });
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

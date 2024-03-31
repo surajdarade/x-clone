@@ -12,9 +12,14 @@ export const createTweet = async (req: Request, res: Response) => {
         .json({ message: "Fields are required!", success: false });
     }
 
+    const user = await UserModel.findById(id).select(
+      "-password -bookmarks -following -followers -createdAt -updatedAt"
+    );
+
     await TweetModel.create({
       description,
       userId: id,
+      userDetails: user,
     });
 
     return res
@@ -31,7 +36,7 @@ export const deleteTweet = async (req: Request, res: Response) => {
     await TweetModel.findByIdAndDelete(id);
     return res
       .status(200)
-      .json({ message: "Tweet deleted successfully", success: true });
+      .json({ message: "Tweet deleted successfully!", success: true });
   } catch (error) {
     console.log(error);
   }
@@ -53,12 +58,12 @@ export const likeOrDislike = async (req: Request, res: Response) => {
       await TweetModel.findByIdAndUpdate(tweetId, {
         $pull: { like: loggedInUserId },
       });
-      return res.status(200).json({ message: "Tweet Disliked!" });
+      return res.status(200).json({ message: "Tweet Disliked!", success: true });
     } else {
       await TweetModel.findByIdAndUpdate(tweetId, {
         $push: { like: loggedInUserId },
       });
-      return res.status(200).json({ message: "Tweet Liked!" });
+      return res.status(200).json({ message: "Tweet Liked!", success: true });
     }
   } catch (error) {
     console.log(error);
@@ -98,9 +103,8 @@ export const getAllTweets = async (req: Request, res: Response) => {
 // GET FOLLOWING TWEETS ONLY
 
 export const getFollowingTweets = async (req: Request, res: Response) => {
-
   try {
-    const id = req.params.id;
+    const id = req.params._id;
 
     const loggedInUser = await UserModel.findById(id);
 
