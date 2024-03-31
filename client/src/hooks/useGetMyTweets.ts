@@ -6,21 +6,39 @@ import { getAllTweets, TweetState } from "../store/tweetSlice";
 const useGetMyTweets = (_id: string) => {
   const dispatch = useDispatch();
 
-  const { refresh } = useSelector((store: { tweet: TweetState }) => store.tweet);
+  const { refresh, isActive } = useSelector(
+    (store: { tweet: TweetState }) => store.tweet
+  );
+
+  const fetchFollowingTweets = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/v1/tweet/followingTweets/${_id}`,
+        { withCredentials: true }
+      );
+      console.log(res);
+      dispatch(getAllTweets(res.data.tweets));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMyTweets = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/v1/tweet/allTweets/${_id}`,
+        { withCredentials: true }
+      );
+      console.log(res)
+      dispatch(getAllTweets(res.data.tweets));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchMyTweets = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/api/v1/tweet/allTweets/${_id}`,
-          { withCredentials: true }
-        );
-        dispatch(getAllTweets(res.data.tweets));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchMyTweets();
-  }, [_id, dispatch, refresh]);
+    isActive ? fetchMyTweets() : fetchFollowingTweets();
+  }, [_id, dispatch, refresh, isActive]);
 };
 
 export default useGetMyTweets;

@@ -13,7 +13,7 @@ const Feed = () => {
   const { tweets } = useSelector((store: { tweet: TweetState }) => store.tweet);
 
   return (
-    <div className="w-[50%] border border-gray-200">
+    <div className="w-[50%] border border-gray-20">
       <div>
         <CreatePost />
         {
