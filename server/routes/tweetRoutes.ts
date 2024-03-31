@@ -7,6 +7,6 @@ router.post("/create", createTweet);
 router.delete("/delete/:id", deleteTweet);
 router.put("/like/:id", likeOrDislike);
 router.get("/allTweets/:id", getAllTweets);
-router.get("/followingTweets/:id", getFollowingTweets);
+router.get("/followingTweets/:_id", getFollowingTweets);
 
 export default router;
