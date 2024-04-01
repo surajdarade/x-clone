@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
 import timeSince from "../utils/timeFunction";
+import { FcLike } from "react-icons/fc";
 
 interface TweetProps {
   tweet: {
@@ -51,7 +52,6 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         { withCredentials: true }
       );
       dispatch(getRefresh());
-      console.log(res);
       dispatch(getBookmarks(_id || ''));
       if (res.data.success) {
         toast.success(res.data.message);
@@ -111,7 +111,12 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                     onClick={() => likeOrDislikeHandler(tweet?._id)}
                     className="p-2 hover:bg-red-100 rounded-full cursor-pointer"
                   >
-                    <CiHeart size="24px" />
+                    {tweet?.like?.includes(user?._id || '') ? 
+                      <FcLike size="24px" />
+                     : 
+                     <CiHeart size="24px" />
+                    }
+                    
                   </div>
                   <p>{tweet?.like?.length}</p>
                 </div>

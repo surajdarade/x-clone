@@ -42,6 +42,7 @@ const tweetSlice = createSlice({
     getIsActive: (state, action: PayloadAction<boolean>) => {
       state.isActive = action.payload;
     },
+    
     tweetSliceReset: () => initialState,
   },
 });
