@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { UserState } from "../store/userSlice";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-
+import { Helmet } from "react-helmet";
 const Home = () => {
   const { user } = useSelector((store: { user: UserState }) => store.user);
   const navigate = useNavigate();
@@ -23,6 +23,9 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Home / X</title>
+      </Helmet>
       <Toaster />
       <div className="flex justify-between w-[80%] mx-auto mt-4">
         <LeftSidebar />

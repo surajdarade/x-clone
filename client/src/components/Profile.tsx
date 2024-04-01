@@ -3,12 +3,11 @@ import banner from "../assets/banner.jpg";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Avatar from "react-avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
+import { getFollowUnfollowUpdate, getMyProfile, UserState } from "../store/userSlice";
 import useGetProfile from "../hooks/useGetProfile";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getRefresh } from "../store/tweetSlice";
-
 const Profile = () => {
   const { user, profile } = useSelector(
     (store: { user: UserState }) => store.user
@@ -27,8 +26,9 @@ const Profile = () => {
           { id: user?._id },
           { withCredentials: true }
         );
-        dispatch(getFollowUnfollowUpdate(id || ''));
+        dispatch(getFollowUnfollowUpdate(id || ""));
         dispatch(getRefresh());
+        dispatch(getMyProfile(user));
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -41,8 +41,9 @@ const Profile = () => {
           { id: user?._id },
           { withCredentials: true }
         );
-        dispatch(getFollowUnfollowUpdate(id || ''));
+        dispatch(getFollowUnfollowUpdate(id || ""));
         dispatch(getRefresh());
+        dispatch(getMyProfile(user));
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -98,6 +99,12 @@ const Profile = () => {
           </div>
           <div className="m-4 text-sm">
             <p>Full stack developer</p>
+          </div>
+          <div className="m-4 flex text-sm">
+            <p className="font-bold mr-2">{profile?.following.length}</p>
+            <p>Following</p>
+            <p className="font-bold ml-2 mr-2">{profile?.followers.length}</p>
+            <p>Followers</p>
           </div>
         </div>
       </div>

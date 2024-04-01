@@ -12,6 +12,7 @@ export interface User {
   _id: string;
   username: string;
   following: string[];
+  followers: string[];
   bookmarks: string[];
 }
 
@@ -21,6 +22,7 @@ export interface Profile {
   _id: string;
   username: string;
   following: string[];
+  followers: string[];
   bookmarks: string[];
 }
 
@@ -30,6 +32,7 @@ export interface OtherUser {
   _id: string;
   username: string;
   following: string[];
+  followers: string[];
   bookmarks: string[];
 }
 
