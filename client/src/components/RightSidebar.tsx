@@ -1,9 +1,14 @@
 import { CiSearch } from "react-icons/ci";
 import Avatar from "react-avatar";
 import { useSelector } from "react-redux";
-import { UserState } from "../store/userSlice";
+import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
 import useOtherUsers from "../hooks/useOtherUsers";
 import { Link } from "react-router-dom";
+import { getRefresh } from "../store/tweetSlice";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 const RightSidebar = () => {
   const { user, otherUsers } = useSelector(
     (store: { user: UserState }) => store.user
@@ -12,6 +17,42 @@ const RightSidebar = () => {
   const _id = user?._id || "";
 
   useOtherUsers(_id);
+
+  const dispatch = useDispatch();
+
+  const followUnfollowHandler = async (otherUserId: string) => {
+    // unfollow
+    if (user?.following.includes(otherUserId || "")) {
+      try {
+        const res = await axios.post(
+          `http://localhost:3000/api/v1/user/unfollow/${otherUserId}`,
+          { id: user?._id },
+          { withCredentials: true }
+        );
+        dispatch(getFollowUnfollowUpdate(otherUserId || ""));
+        dispatch(getRefresh());
+        toast.success(res.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
+    } else {
+      try {
+        const res = await axios.post(
+          `http://localhost:3000/api/v1/user/follow/${otherUserId}`,
+          { id: user?._id },
+          { withCredentials: true }
+        );
+        dispatch(getFollowUnfollowUpdate(otherUserId || ""));
+        dispatch(getRefresh());
+        toast.success(res.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
+    }
+    // follow
+  };
 
   return (
     <div className="w-[25%]">
@@ -26,10 +67,10 @@ const RightSidebar = () => {
       <div className="p-4 bg-gray-100 rounded-2xl my-4">
         <h1 className="font-bold text-lg">Who to follow</h1>
 
-        {otherUsers?.map((user) => {
+        {otherUsers?.map((otherUser) => {
           return (
             <div
-              key={user?._id}
+              key={otherUser?._id}
               className="flex items-center justify-between my-3"
             >
               <div className="flex">
@@ -38,18 +79,20 @@ const RightSidebar = () => {
                   size="40"
                   round={true}
                 />
-                <div className="ml-2">
-                  <h1 className="font-semibold">{user?.name}</h1>
-                  <p className="text-sm">{`@${user?.username}`}</p>
-                </div>
+                <Link to={`/profile/${otherUser?._id}`} className="ml-2">
+                  <h1 className="font-semibold">{otherUser?.name}</h1>
+                  <p className="text-sm">{`@${otherUser?.username}`}</p>
+                </Link>
               </div>
               <div>
-                <Link
-                  to={`/profile/${user?._id}`}
-                  className="px-4 py-1 bg-black text-white rounded-full"
+                <button
+                  onClick={() => followUnfollowHandler(otherUser?._id)}
+                  className="px-4 py-1 rounded-full bg-black text-white"
                 >
-                  Profile
-                </Link>
+                  {user?.following.includes(otherUser?._id || "")
+                    ? "Unfollow"
+                    : "Follow"}
+                </button>
               </div>
             </div>
           );
