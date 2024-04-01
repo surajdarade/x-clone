@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/signup", SignUp);
 router.post("/signin", SignIn);
 router.get("/logout", Logout);
-router.put("/bookmark/:id", isAuthenticated, bookmark);
+router.put("/bookmark/:_id", isAuthenticated, bookmark);
 router.get("/profile/:_id", isAuthenticated, getMyProfile);
 router.get("/otherUsers/:_id", isAuthenticated, getOtherUsers);
 router.post("/follow/:id", isAuthenticated, follow);

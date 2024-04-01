@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import store from "./store/store.tsx";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import Bookmark from "./components/Bookmark.tsx";
 
 const persistor = persistStore(store);
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: "/profile/:id",
         element: <Profile />,
       },
+      {
+        path: "bookmark",
+        element: <Bookmark />
+      }
     ],
   },
   {

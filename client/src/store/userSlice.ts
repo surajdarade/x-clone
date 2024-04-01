@@ -12,6 +12,7 @@ export interface User {
   _id: string;
   username: string;
   following: string[];
+  bookmarks: string[];
 }
 
 export interface Profile {
@@ -20,6 +21,7 @@ export interface Profile {
   _id: string;
   username: string;
   following: string[];
+  bookmarks: string[];
 }
 
 export interface OtherUser {
@@ -28,6 +30,7 @@ export interface OtherUser {
   _id: string;
   username: string;
   following: string[];
+  bookmarks: string[];
 }
 
 const initialState: UserState = {
@@ -49,7 +52,7 @@ const userSlice = createSlice({
     getMyProfile: (state, action: PayloadAction<Profile | null>) => {
       state.profile = action.payload;
     },
-    getFollowUnfollowUpdate: (state, action: PayloadAction<string | ''>) => {
+    getFollowUnfollowUpdate: (state, action: PayloadAction<string | "">) => {
       if (state.user?.following.includes(action.payload)) {
         state.user.following = state.user?.following.filter((itemId) => {
           return itemId != action.payload;
@@ -58,11 +61,26 @@ const userSlice = createSlice({
         state.user?.following.push(action.payload);
       }
     },
-    userSliceReset: () => initialState
+    getBookmarks: (state, action: PayloadAction<string | "">) => {
+      if (state.user?.bookmarks.includes(action.payload)) {
+        state.user.bookmarks = state.user?.bookmarks.filter((itemId) => {
+          return itemId != action.payload;
+        });
+      } else {
+        state.user?.bookmarks.push(action.payload);
+      }
+    },
+    userSliceReset: () => initialState,
   },
 });
 
-export const { getUser, getOtherUsers, getMyProfile, getFollowUnfollowUpdate, userSliceReset } =
-  userSlice.actions;
+export const {
+  getUser,
+  getOtherUsers,
+  getMyProfile,
+  getFollowUnfollowUpdate,
+  getBookmarks,
+  userSliceReset,
+} = userSlice.actions;
 
 export default userSlice.reducer;

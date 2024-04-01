@@ -119,7 +119,7 @@ export const Logout = (req: Request, res: Response) => {
 export const bookmark = async (req: Request, res: Response) => {
   try {
     const loggedInUserId = req.body.id;
-    const tweetId = req.params.id;
+    const tweetId = req.params._id;
 
     const user = await UserModel.findOne({ _id: loggedInUserId });
 
@@ -134,13 +134,17 @@ export const bookmark = async (req: Request, res: Response) => {
       await UserModel.findByIdAndUpdate(loggedInUserId, {
         $pull: { bookmarks: tweetId },
       });
-      res.status(200).json({ message: "Tweet removed from bookmarks!" });
+      return res
+        .status(200)
+        .json({ message: "Tweet removed from bookmarks!", success: true });
     } else {
       // add as bookmark
       await UserModel.findByIdAndUpdate(loggedInUserId, {
         $push: { bookmarks: tweetId },
       });
-      res.status(200).json({ message: "Tweet bookmarked!" });
+      return res
+        .status(200)
+        .json({ message: "Tweet bookmarked!", success: true });
     }
   } catch (error) {
     console.log(error);
