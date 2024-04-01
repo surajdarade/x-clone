@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { TweetModel } from "../models/tweetModel";
 
 const envPath = path.resolve(__dirname, "../.env");
 
@@ -148,6 +149,33 @@ export const bookmark = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+// GET BOOKMARK CONTROLLER
+
+export const getMyBookmarks = async (req: Request, res: Response) => {
+  try {
+    const loggedInUserId = req.params._id;
+
+    // Find the user by ID
+    const user = await UserModel.findById(loggedInUserId).select(
+      "-id -name -username -email -password -createdAt -updatedAt -followers -following -__v"
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    // Fetch details of tweets corresponding to each bookmark ID
+    const bookmarkedTweets = await TweetModel.find({
+      _id: { $in: user.bookmarks }, // Access the bookmarks directly from the user object
+    });
+
+    return res.status(200).json({ tweets: bookmarkedTweets, success: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 

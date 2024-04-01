@@ -12,8 +12,9 @@ const CreatePost = () => {
 
   const { user } = useSelector((store: { user: UserState }) => store.user);
 
-  const { isActive } = useSelector((store: { tweet: TweetState }) => store.tweet);
-
+  const { isActive } = useSelector(
+    (store: { tweet: TweetState }) => store.tweet
+  );
 
   const dispatch = useDispatch();
 
@@ -44,19 +45,27 @@ const CreatePost = () => {
 
   return (
     <>
-    <Toaster />
+      <Toaster />
       <div className="w-[100%]">
         <div>
           <div className="flex items-center justify-evenly border-b border-gray-200">
             <div
               onClick={forYouToggle}
-              className={`${isActive ? "border-b-4 border-[#1D98F0]" : "border-b-4 border-transparent"} cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3`}
+              className={`${
+                isActive
+                  ? "border-b-4 border-[#1D98F0]"
+                  : "border-b-4 border-transparent"
+              } cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3`}
             >
               <h1 className="font-semibold text-gray-800 text-lg">For You</h1>
             </div>
             <div
               onClick={followingToggle}
-              className={`${!isActive ? "border-b-4 border-[#1D98F0]" : "border-b-4 border-transparent"} cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3`}
+              className={`${
+                !isActive
+                  ? "border-b-4 border-[#1D98F0]"
+                  : "border-b-4 border-transparent"
+              } cursor-pointer hover:bg-gray-200 w-full text-center px-4 py-3`}
             >
               <h1 className="font-semibold text-gray-800 text-lg">Following</h1>
             </div>

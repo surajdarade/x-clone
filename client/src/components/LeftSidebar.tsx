@@ -76,13 +76,13 @@ const LeftSidebar = () => {
 
               <h1 className="font-semibold text-lg ml-2">Messages</h1>
             </div>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <Link to={`/bookmark/${user?._id}`} className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
               <div>
                 <CiHashtag size="24px" />
               </div>
 
               <h1 className="font-semibold text-lg ml-2">Bookmarks</h1>
-            </div>
+            </Link>
             <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
               <div>
                 <LiaClipboardListSolid size="24px" />

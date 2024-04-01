@@ -2,6 +2,7 @@ import express from "express";
 import {
   bookmark,
   follow,
+  getMyBookmarks,
   getMyProfile,
   getOtherUsers,
   Logout,
@@ -17,6 +18,7 @@ router.post("/signup", SignUp);
 router.post("/signin", SignIn);
 router.get("/logout", Logout);
 router.put("/bookmark/:_id", isAuthenticated, bookmark);
+router.get("/getMyBookmark/:_id", isAuthenticated, getMyBookmarks);
 router.get("/profile/:_id", isAuthenticated, getMyProfile);
 router.get("/otherUsers/:_id", isAuthenticated, getOtherUsers);
 router.post("/follow/:id", isAuthenticated, follow);

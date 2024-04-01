@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
 import timeSince from "../utils/timeFunction";
 import { FcLike } from "react-icons/fc";
+import { Link } from "react-router-dom";
 
 interface TweetProps {
   tweet: {
@@ -52,7 +53,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         { withCredentials: true }
       );
       dispatch(getRefresh());
-      dispatch(getBookmarks(_id || ''));
+      dispatch(getBookmarks(_id || ""));
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -88,14 +89,13 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
               round={true}
             />
             <div className="ml-2 w-full">
-              <div className="flex items-center">
+              <Link to={`/profile/${tweet?.userId}`} className="flex items-center">
                 <h1 className="font-semibold">{tweet?.userDetails[0].name}</h1>
-
                 <p className="text-gray-500 text-sm ml-1">
-                  {`@${tweet?.userDetails[0].username}`} .{" "}
+                  {`@${tweet?.userDetails[0].username}`} . {" "}
                   {timeSince(tweet?.createdAt)}
                 </p>
-              </div>
+              </Link>
               <div>
                 <p>{tweet?.description}</p>
               </div>
@@ -104,19 +104,18 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                   <div className="p-2 hover:bg-blue-100 rounded-full cursor-pointer">
                     <FaRegComment size="20px" />
                   </div>
-                  <p>0</p>
+                  {/* <p>0</p> */}
                 </div>
                 <div className="flex items-center">
                   <div
                     onClick={() => likeOrDislikeHandler(tweet?._id)}
                     className="p-2 hover:bg-red-100 rounded-full cursor-pointer"
                   >
-                    {tweet?.like?.includes(user?._id || '') ? 
+                    {tweet?.like?.includes(user?._id || "") ? (
                       <FcLike size="24px" />
-                     : 
-                     <CiHeart size="24px" />
-                    }
-                    
+                    ) : (
+                      <CiHeart size="24px" />
+                    )}
                   </div>
                   <p>{tweet?.like?.length}</p>
                 </div>
@@ -125,11 +124,11 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                   className="flex items-center"
                 >
                   <div className="p-2 hover:bg-blue-100 rounded-full cursor-pointer">
-                    {user?.bookmarks?.includes(tweet?._id) ? 
+                    {user?.bookmarks?.includes(tweet?._id) ? (
                       <GoBookmarkFill size="24px" />
-                     : 
+                    ) : (
                       <GoBookmark size="24px" />
-                    }
+                    )}
                   </div>
                 </div>
                 {user?._id == tweet?.userId && (

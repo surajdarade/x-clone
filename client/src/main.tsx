@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "bookmark",
+        path: "/bookmark/:id",
         element: <Bookmark />
       }
     ],

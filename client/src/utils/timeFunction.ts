@@ -19,7 +19,7 @@ const timeSince = (timestamp: string): string => {
             const interval = intervals[key];
             if (secondsPast >= interval) {
                 const count = Math.floor(secondsPast / interval);
-                return `${count} ${key} ${count > 1 ? '' : ''} ${suffix}`;
+                return `${count} ${key}${count > 1 ? 's' : ''} ${suffix}`;
             }
         }
     }
