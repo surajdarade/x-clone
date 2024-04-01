@@ -2,7 +2,7 @@ import { useState } from "react";
 import Avatar from "react-avatar";
 import { CiImageOn } from "react-icons/ci";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../store/userSlice";
 import { getIsActive, getRefresh, TweetState } from "../store/tweetSlice";
@@ -25,6 +25,7 @@ const CreatePost = () => {
         { withCredentials: true }
       );
       dispatch(getRefresh());
+      dispatch(getIsActive(true));
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -43,7 +44,6 @@ const CreatePost = () => {
 
   return (
     <>
-      <Toaster />
       <div className="w-[100%]">
         <div>
           <div className="flex items-center justify-evenly border-b border-gray-200">

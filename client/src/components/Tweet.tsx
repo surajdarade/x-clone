@@ -6,8 +6,9 @@ import { getRefresh, UserDetails } from "../store/tweetSlice";
 import axios from "axios";
 import { UserState } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
+import timeSince from "../utils/timeFunction";
 
 interface TweetProps {
   tweet: {
@@ -16,6 +17,7 @@ interface TweetProps {
     description: string;
     like: string[];
     userDetails: UserDetails[];
+    createdAt: string;
   };
 }
 
@@ -32,7 +34,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         { withCredentials: true }
       );
       dispatch(getRefresh());
-      
+
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -44,20 +46,22 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
   const deleteTweetHandler = async (id: string) => {
     try {
       axios.defaults.withCredentials = true;
-      const res = await axios.delete(`http://localhost:3000/api/v1/tweet/delete/${id}`);
+      const res = await axios.delete(
+        `http://localhost:3000/api/v1/tweet/delete/${id}`
+      );
       dispatch(getRefresh());
       console.log(res);
-      if(res.data.success){
+      if (res.data.success) {
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>
-      <Toaster />
+      
       <div className="border-b border-gray-200">
         <div>
           <div className="flex p-4">
@@ -71,7 +75,8 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                 <h1 className="font-semibold">{tweet?.userDetails[0].name}</h1>
 
                 <p className="text-gray-500 text-sm ml-1">
-                  {`@${tweet?.userDetails[0].username}`} . 1m
+                  {`@${tweet?.userDetails[0].username}`} .{" "}
+                  {timeSince(tweet?.createdAt)}
                 </p>
               </div>
               <div>
@@ -100,7 +105,10 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                   <p>0</p>
                 </div>
                 {user?._id == tweet?.userId && (
-                  <div onClick={()=> deleteTweetHandler(tweet?._id)} className="flex items-center">
+                  <div
+                    onClick={() => deleteTweetHandler(tweet?._id)}
+                    className="flex items-center"
+                  >
                     <div className="p-2 hover:bg-red-300 rounded-full cursor-pointer">
                       <MdDeleteOutline size="24px" />
                     </div>

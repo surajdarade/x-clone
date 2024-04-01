@@ -16,7 +16,6 @@ const useGetMyTweets = (_id: string) => {
         `http://localhost:3000/api/v1/tweet/followingTweets/${_id}`,
         { withCredentials: true }
       );
-      console.log(res);
       dispatch(getAllTweets(res.data.tweets));
     } catch (error) {
       console.log(error);
@@ -29,7 +28,6 @@ const useGetMyTweets = (_id: string) => {
         `http://localhost:3000/api/v1/tweet/allTweets/${_id}`,
         { withCredentials: true }
       );
-      console.log(res)
       dispatch(getAllTweets(res.data.tweets));
     } catch (error) {
       console.log(error);

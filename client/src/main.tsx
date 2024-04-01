@@ -7,6 +7,10 @@ import Feed from "./components/Feed.tsx";
 import Profile from "./components/Profile.tsx";
 import { Provider } from "react-redux";
 import store from "./store/store.tsx";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+
+const persistor = persistStore(store);
 
 const router = createBrowserRouter([
   {
@@ -24,15 +28,15 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/signin-signup",
+    path: "/signin",
     element: <SignInSignUp />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
- 
-    <Provider store={store}>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
       <RouterProvider router={router} />
-    </Provider>
-  
+    </PersistGate>
+  </Provider>
 );

@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { getUser } from "../store/userSlice";
 const SignInSignUp = () => {
   const [signIn, setSignIn] = useState(true);
-
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -18,10 +17,8 @@ const SignInSignUp = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (signIn) {
       // SIGN IN
-
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/signin`,
@@ -34,10 +31,10 @@ const SignInSignUp = () => {
         dispatch(getUser(res?.data?.user));
         if (res.data.success) {
           navigate("/");
-          // toast.success(res.data.message);
+          toast.success(res.data.message);
         }
       } catch (error) {
-        console.log(error);
+        toast.error(error.response.data.message);
       }
     } else {
       // SIGN UP
@@ -88,12 +85,16 @@ const SignInSignUp = () => {
             toast.success(res.data.message);
           }
         } catch (error) {
-          console.log(error);
+          toast.error(error.response.data.message);
         }
       } else {
         toast.error(toastMessage);
       }
     }
+    setName("");
+    setUsername("");
+    setEmail("");
+    setPassword("");
   };
 
   const signInSignUpHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -102,7 +103,7 @@ const SignInSignUp = () => {
   };
   return (
     <>
-      <Toaster />
+    <Toaster />
       <div className="w-screen h-screen flex items-center justify-center">
         <div className="flex items-center justify-evenly w-[80%]">
           <div>

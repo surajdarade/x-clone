@@ -11,6 +11,7 @@ export interface User {
   name: string;
   _id: string;
   username: string;
+  following: string[];
 }
 
 export interface Profile {
@@ -18,6 +19,7 @@ export interface Profile {
   name: string;
   _id: string;
   username: string;
+  following: string[];
 }
 
 export interface OtherUser {
@@ -25,6 +27,7 @@ export interface OtherUser {
   name: string;
   _id: string;
   username: string;
+  following: string[];
 }
 
 const initialState: UserState = {
@@ -37,18 +40,29 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getUser: (state, action: PayloadAction<User>) => {
+    getUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
     },
-    getOtherUsers: (state, action: PayloadAction<OtherUser[]>) => {
+    getOtherUsers: (state, action: PayloadAction<OtherUser[] | null>) => {
       state.otherUsers = action.payload;
     },
-    getMyProfile: (state, action: PayloadAction<Profile>) => {
+    getMyProfile: (state, action: PayloadAction<Profile | null>) => {
       state.profile = action.payload;
     },
+    getFollowUnfollowUpdate: (state, action: PayloadAction<string | ''>) => {
+      if (state.user?.following.includes(action.payload)) {
+        state.user.following = state.user?.following.filter((itemId) => {
+          return itemId != action.payload;
+        });
+      } else {
+        state.user?.following.push(action.payload);
+      }
+    },
+    userSliceReset: () => initialState
   },
 });
 
-export const { getUser, getOtherUsers, getMyProfile } = userSlice.actions;
+export const { getUser, getOtherUsers, getMyProfile, getFollowUnfollowUpdate, userSliceReset } =
+  userSlice.actions;
 
 export default userSlice.reducer;

@@ -20,19 +20,20 @@ interface Tweet {
   description: string;
   like: string[];
   userDetails: UserDetails[];
+  createdAt: string;
 }
 
 const initialState: TweetState = {
   tweets: null,
   refresh: false,
-  isActive: false,
+  isActive: true,
 };
 
 const tweetSlice = createSlice({
   name: "tweet",
   initialState,
   reducers: {
-    getAllTweets: (state, action: PayloadAction<Tweet[]>) => {
+    getAllTweets: (state, action: PayloadAction<Tweet[] | null>) => {
       state.tweets = action.payload;
     },
     getRefresh: (state) => {
@@ -41,9 +42,10 @@ const tweetSlice = createSlice({
     getIsActive: (state, action: PayloadAction<boolean>) => {
       state.isActive = action.payload;
     },
+    tweetSliceReset: () => initialState,
   },
 });
 
-export const { getAllTweets, getRefresh, getIsActive } = tweetSlice.actions;
+export const { getAllTweets, getRefresh, getIsActive, tweetSliceReset } = tweetSlice.actions;
 
 export default tweetSlice.reducer;
