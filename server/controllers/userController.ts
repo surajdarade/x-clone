@@ -189,9 +189,30 @@ export const getMyProfile = async (req: Request, res: Response) => {
       "-password"
     );
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Aggregate to count the tweets where userId matches _id of the user
+    const tweetCount = await TweetModel.aggregate([
+      {
+        $match: { userId: user._id },
+      },
+      {
+        $count: "tweetCount",
+      },
+    ]);
+    const count = tweetCount.length > 0 ? tweetCount[0].tweetCount : 0;
+
+    const profileWithTweetCount = {
+      ...user.toJSON(),
+      tweetCount: count,
+    };
+
     return res.status(200).json({
-      profile: user,
+      profile: profileWithTweetCount,
     });
+
   } catch (error) {
     console.log(error);
   }

@@ -14,6 +14,7 @@ export interface User {
   following: string[];
   followers: string[];
   bookmarks: string[];
+  tweetCount: number
 }
 
 export interface Profile {
@@ -24,6 +25,7 @@ export interface Profile {
   following: string[];
   followers: string[];
   bookmarks: string[];
+  tweetCount: number
 }
 
 export interface OtherUser {
@@ -34,6 +36,7 @@ export interface OtherUser {
   following: string[];
   followers: string[];
   bookmarks: string[];
+  tweetCount: number
 }
 
 const initialState: UserState = {

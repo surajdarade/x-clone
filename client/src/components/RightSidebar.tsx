@@ -1,7 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import Avatar from "react-avatar";
 import { useSelector } from "react-redux";
-import { getFollowUnfollowUpdate, getMyProfile, UserState } from "../store/userSlice";
+import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
 import useOtherUsers from "../hooks/useOtherUsers";
 import { Link } from "react-router-dom";
 import { getRefresh } from "../store/tweetSlice";
@@ -31,7 +31,6 @@ const RightSidebar = () => {
         );
         dispatch(getFollowUnfollowUpdate(otherUserId || ""));
         dispatch(getRefresh());
-        dispatch(getMyProfile(user));
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -46,7 +45,6 @@ const RightSidebar = () => {
         );
         dispatch(getFollowUnfollowUpdate(otherUserId || ""));
         dispatch(getRefresh());
-        dispatch(getMyProfile(user));
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);

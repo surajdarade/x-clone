@@ -3,7 +3,7 @@ import banner from "../assets/banner.jpg";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Avatar from "react-avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { getFollowUnfollowUpdate, getMyProfile, UserState } from "../store/userSlice";
+import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
 import useGetProfile from "../hooks/useGetProfile";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -28,7 +28,6 @@ const Profile = () => {
         );
         dispatch(getFollowUnfollowUpdate(id || ""));
         dispatch(getRefresh());
-        dispatch(getMyProfile(user));
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -43,9 +42,8 @@ const Profile = () => {
         );
         dispatch(getFollowUnfollowUpdate(id || ""));
         dispatch(getRefresh());
-        dispatch(getMyProfile(user));
         toast.success(res.data.message);
-      } catch (error) {
+      } catch (error: any) {
         toast.error(error.response.data.message);
         console.log(error);
       }
@@ -68,7 +66,7 @@ const Profile = () => {
             </Link>
             <div className="ml-2">
               <h1 className="font-semibold text-lg">{profile?.name}</h1>
-              <p className="text-gray-500 text-sm">10 posts</p>
+              <p className="text-gray-500 text-sm">{profile?.tweetCount} posts</p>
             </div>
           </div>
           <img src={banner} alt="banner" />
