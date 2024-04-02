@@ -1,4 +1,3 @@
-import { CiSearch } from "react-icons/ci";
 import Avatar from "react-avatar";
 import { useSelector } from "react-redux";
 import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
@@ -8,6 +7,7 @@ import { getRefresh } from "../store/tweetSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import SearchBox from "./SearchBox";
 
 const RightSidebar = () => {
   const { user, otherUsers } = useSelector(
@@ -56,14 +56,7 @@ const RightSidebar = () => {
 
   return (
     <div className="w-[25%]">
-      <div className="flex items-center p-2 bg-gray-100 rounded-full outline-none">
-        <CiSearch size="20px" />
-        <input
-          type="text"
-          placeholder="Search"
-          className="bg-transparent outline-none px-2"
-        />
-      </div>
+      <SearchBox />
       <div className="p-4 bg-gray-100 rounded-2xl my-4">
         <h1 className="font-bold text-lg">Who to follow</h1>
 
