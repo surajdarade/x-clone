@@ -222,15 +222,23 @@ export const getMyProfile = async (req: Request, res: Response) => {
 export const getOtherUsers = async (req: Request, res: Response) => {
   try {
     const { _id } = req.params;
-    const otherUsers = await UserModel.find({ _id: { $ne: _id } }).select(
-      "-password -bookmarks"
-    );
 
-    if (!otherUsers) {
-      res.status(401).json({ message: "No users found!" });
+    // Aggregate pipeline to select random 4 users excluding the logged-in user
+    // Ensure _id is converted to ObjectId
+    const loggedUserId = new mongoose.Types.ObjectId(_id);
+
+    // Aggregate pipeline to select random 4 users excluding the logged-in user
+    const otherUsers = await UserModel.aggregate([
+      { $match: { _id: { $ne: loggedUserId } } }, // Exclude logged-in user
+      { $sample: { size: 4 } } // Select 4 random users
+    ]);
+
+    if (!otherUsers || otherUsers.length === 0) {
+      return res.status(404).json({ message: 'No other users found' });
     }
 
     return res.status(200).json({ otherUsers });
+
   } catch (error) {
     console.log(error);
   }
