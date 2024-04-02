@@ -6,9 +6,11 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../store/userSlice";
 import { getIsActive, getRefresh, TweetState } from "../store/tweetSlice";
+import { ClipLoader } from "react-spinners";
 
 const CreatePost = () => {
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false); // State to manage loading state of post button
 
   const { user } = useSelector((store: { user: UserState }) => store.user);
 
@@ -19,6 +21,7 @@ const CreatePost = () => {
   const dispatch = useDispatch();
 
   const createPostHandler = async () => {
+    setLoading(true); // Start loading when post button is clicked
     try {
       const res = await axios.post(
         `http://localhost:3000/api/v1/tweet/create`,
@@ -32,6 +35,8 @@ const CreatePost = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Stop loading after post request completes
     }
     setDescription("");
   };
@@ -93,9 +98,14 @@ const CreatePost = () => {
               </div>
               <button
                 onClick={createPostHandler}
-                className="bg-[#1D98F0] px-4 py-1 border-none text-white rounded-full text-lg"
+                className="bg-[#1D98F0] px-4 py-1 border-none text-white rounded-full text-lg flex items-center justify-center"
+                disabled={!description || loading} // Disable button when description is empty or when loading
               >
-                Post
+                {loading ? (
+                  <ClipLoader color={"#ffffff"} loading={true} size={20} /> // Display spinner when loading
+                ) : (
+                  "Post"
+                )}
               </button>
             </div>
           </div>
