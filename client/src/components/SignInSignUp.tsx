@@ -5,20 +5,22 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getUser } from "../store/userSlice";
+import { ClipLoader } from "react-spinners";
 const SignInSignUp = () => {
   const [signIn, setSignIn] = useState(true);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     if (signIn) {
-      // SIGN IN
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/signin`,
@@ -35,6 +37,8 @@ const SignInSignUp = () => {
         }
       } catch (error) {
         toast.error(error.response.data.message);
+      } finally {
+        setLoading(false); 
       }
     } else {
       // SIGN UP
@@ -82,6 +86,7 @@ const SignInSignUp = () => {
           );
           if (res.data.success) {
             setSignIn(true);
+            setLoading(false);
             toast.success(res.data.message);
           }
         } catch (error) {
@@ -89,6 +94,7 @@ const SignInSignUp = () => {
         }
       } else {
         toast.error(toastMessage);
+        setLoading(false);
       }
     }
     setName("");
@@ -103,7 +109,7 @@ const SignInSignUp = () => {
   };
   return (
     <>
-    <Toaster />
+      <Toaster />
       <div className="w-screen h-screen flex items-center justify-center">
         <div className="flex items-center justify-evenly w-[80%]">
           <div>
@@ -152,8 +158,17 @@ const SignInSignUp = () => {
                 className="outline-blue-400 border border-gray-400 px-3 py-2 rounded-full my-1"
                 required
               />
-              <button className="bg-[#1D98F0] border-none py-2 my-4 rounded-full text-white">
-                {signIn ? "Sign in" : "Create Account"}
+              <button
+                className="bg-[#1D98F0] border-none py-2 my-4 rounded-full text-white flex items-center justify-center"
+                disabled={loading} // Disable button when loading
+              >
+                {loading ? (
+                  <ClipLoader color={"#ffffff"} loading={true} size={20} /> // Display spinner when loading
+                ) : signIn ? (
+                  "Sign in"
+                ) : (
+                  "Create Account"
+                )}
               </button>
               <h1>
                 {signIn ? "Don't have an account?" : "Already have an account?"}

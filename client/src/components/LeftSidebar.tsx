@@ -42,7 +42,7 @@ const LeftSidebar = () => {
       <div className="w-[20%]">
         <div>
           <Link to="/">
-            <img className="ml-4" src={x} width={"50px"} alt="x-logo"></img>
+            <img className="ml-4 rounded-full py-3 px-2 hover:bg-gray-200" src={x} width={"50px"} alt="x-logo"></img>
           </Link>
           <div className="my-4">
             <Link

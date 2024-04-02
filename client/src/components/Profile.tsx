@@ -60,7 +60,7 @@ const Profile = () => {
           <div className="flex items-center py-2">
             <Link
               to="/"
-              className="p-2 rounded-full hover:bg-gray-100 hover:cursor-pointer"
+              className="p-2 mx-1 rounded-full hover:bg-gray-100 hover:cursor-pointer"
             >
               <IoIosArrowRoundBack size="24px" />
             </Link>
