@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserModel } from "../models/userModel";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -175,7 +175,9 @@ export const getMyBookmarks = async (req: Request, res: Response) => {
     return res.status(200).json({ tweets: bookmarkedTweets, success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -212,7 +214,6 @@ export const getMyProfile = async (req: Request, res: Response) => {
     return res.status(200).json({
       profile: profileWithTweetCount,
     });
-
   } catch (error) {
     console.log(error);
   }
@@ -230,15 +231,14 @@ export const getOtherUsers = async (req: Request, res: Response) => {
     // Aggregate pipeline to select random 4 users excluding the logged-in user
     const otherUsers = await UserModel.aggregate([
       { $match: { _id: { $ne: loggedUserId } } }, // Exclude logged-in user
-      { $sample: { size: 4 } } // Select 4 random users
+      { $sample: { size: 4 } }, // Select 4 random users
     ]);
 
     if (!otherUsers || otherUsers.length === 0) {
-      return res.status(404).json({ message: 'No other users found' });
+      return res.status(404).json({ message: "No other users found" });
     }
 
     return res.status(200).json({ otherUsers });
-
   } catch (error) {
     console.log(error);
   }
@@ -319,5 +319,37 @@ export const unfollow = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+// SEARCH USERS CONTROLLER
+
+export const searchUsers = async (req: Request, res: Response) => {
+  try {
+    if (req.query.keyword) {
+      const keyword = req.query.keyword as string;
+      const users = await UserModel.find({
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { username: { $regex: keyword, $options: "i" } },
+        ],
+      });
+
+      res.status(200).json({
+        users,
+        success: true,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Keyword parameter is missing.",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };

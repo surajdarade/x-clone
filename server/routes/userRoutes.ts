@@ -6,6 +6,7 @@ import {
   getMyProfile,
   getOtherUsers,
   Logout,
+  searchUsers,
   SignIn,
   SignUp,
   unfollow,
@@ -23,5 +24,6 @@ router.get("/profile/:_id", isAuthenticated, getMyProfile);
 router.get("/otherUsers/:_id", isAuthenticated, getOtherUsers);
 router.post("/follow/:id", isAuthenticated, follow);
 router.post("/unfollow/:id", isAuthenticated, unfollow);
+router.get("/users", isAuthenticated, searchUsers);
 
 export default router;
