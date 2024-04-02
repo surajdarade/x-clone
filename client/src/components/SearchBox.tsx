@@ -20,8 +20,7 @@ const SearchBox: React.FC = () => {
   const fetchUsers = async (term: string) => {
     setLoading(true);
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/user/users?keyword=${term}`,
-      { withCredentials: true }
+      `http://localhost:3000/api/v1/user/users?keyword=${term}`, {withCredentials: true}
     );
     setUsers(data.users);
     setLoading(false);
@@ -50,7 +49,7 @@ const SearchBox: React.FC = () => {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <div className="hidden sm:flex items-center gap-3 pl-4 w-64 py-2 bg-[#efefef] rounded-full relative">
+      <div className="hidden sm:flex items-center gap-3 pl-4 w-64 py-2 bg-[#efefef] rounded-lg relative">
         {!searching && searchIcon}
         <input
           className="bg-transparent text-sm border-none outline-none flex-1 pr-3"
