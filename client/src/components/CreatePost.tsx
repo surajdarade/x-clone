@@ -21,7 +21,7 @@ const CreatePost = () => {
   const dispatch = useDispatch();
 
   const createPostHandler = async () => {
-    setLoading(true); // Start loading when post button is clicked
+    setLoading(true); 
     try {
       const res = await axios.post(
         `http://localhost:3000/api/v1/tweet/create`,
@@ -36,7 +36,7 @@ const CreatePost = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // Stop loading after post request completes
+      setLoading(false); 
     }
     setDescription("");
   };
@@ -99,10 +99,10 @@ const CreatePost = () => {
               <button
                 onClick={createPostHandler}
                 className="bg-[#1D98F0] px-4 py-1 border-none text-white rounded-full text-lg flex items-center justify-center"
-                disabled={!description || loading} // Disable button when description is empty or when loading
+                disabled={!description || loading} 
               >
                 {loading ? (
-                  <ClipLoader color={"#ffffff"} loading={true} size={20} /> // Display spinner when loading
+                  <ClipLoader color={"#ffffff"} loading={true} size={20} /> 
                 ) : (
                   "Post"
                 )}
