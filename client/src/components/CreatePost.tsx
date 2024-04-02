@@ -10,7 +10,7 @@ import { ClipLoader } from "react-spinners";
 
 const CreatePost = () => {
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false); // State to manage loading state of post button
+  const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((store: { user: UserState }) => store.user);
 
@@ -21,7 +21,7 @@ const CreatePost = () => {
   const dispatch = useDispatch();
 
   const createPostHandler = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const res = await axios.post(
         `http://localhost:3000/api/v1/tweet/create`,
@@ -36,7 +36,7 @@ const CreatePost = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
     setDescription("");
   };
