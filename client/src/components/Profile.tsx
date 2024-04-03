@@ -66,7 +66,9 @@ const Profile = () => {
             </Link>
             <div className="ml-2">
               <h1 className="font-semibold text-lg">{profile?.name}</h1>
-              <p className="text-gray-500 text-sm">{profile?.tweetCount} posts</p>
+              <p className="text-gray-500 text-sm">
+                {profile?.tweetCount} posts
+              </p>
             </div>
           </div>
           <img src={banner} alt="banner" />
@@ -79,9 +81,12 @@ const Profile = () => {
           </div>
           <div className="text-right m-4">
             {profile?._id == user?._id ? (
-              <button className="px-4 py-1 rounded-full hover:bg-gray-100 border border-gray-600">
+              <Link
+                to="/account/edit"
+                className="px-4 py-1 rounded-full hover:bg-gray-100 border border-gray-600"
+              >
                 Edit Profile
-              </button>
+              </Link>
             ) : (
               <button
                 onClick={followUnfollowHandler}
@@ -93,10 +98,10 @@ const Profile = () => {
           </div>
           <div className="m-4 mt-20">
             <h1 className="font-semibold text-xl">{profile?.name}</h1>
-            <p>{`@${profile?.username}`}</p>
+            <p className="text-gray-500 text-sm">{`@${profile?.username}`}</p>
           </div>
           <div className="m-4 text-sm">
-            <p>Full stack developer</p>
+            <p>{profile?.bio}</p>
           </div>
           <div className="m-4 flex text-sm">
             <p className="font-bold mr-2">{profile?.following.length}</p>

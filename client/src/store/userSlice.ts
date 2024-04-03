@@ -11,10 +11,13 @@ export interface User {
   name: string;
   _id: string;
   username: string;
+  email: string;
+  avatar: string;
+  bio: string;
   following: string[];
   followers: string[];
   bookmarks: string[];
-  tweetCount: number
+  tweetCount: number;
 }
 
 export interface Profile {
@@ -22,10 +25,13 @@ export interface Profile {
   name: string;
   _id: string;
   username: string;
+  email: string;
+  avatar: string;
+  bio: string;
   following: string[];
   followers: string[];
   bookmarks: string[];
-  tweetCount: number
+  tweetCount: number;
 }
 
 export interface OtherUser {
@@ -33,10 +39,13 @@ export interface OtherUser {
   name: string;
   _id: string;
   username: string;
+  email: string;
+  avatar: string;
+  bio: string;
   following: string[];
   followers: string[];
   bookmarks: string[];
-  tweetCount: number
+  tweetCount: number;
 }
 
 const initialState: UserState = {

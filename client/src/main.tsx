@@ -10,6 +10,9 @@ import store from "./store/store.tsx";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import Bookmark from "./components/Bookmark.tsx";
+import UpdateProfile from "./components/User/Update/UpdateProfile.tsx";
+import Update from "./components/User/Update/Update.tsx";
+import UpdatePassword from "./components/User/Update/UpdatePassword.tsx";
 
 const persistor = persistStore(store);
 
@@ -28,13 +31,29 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookmark/:id",
-        element: <Bookmark />
-      }
+        element: <Bookmark />,
+      },
     ],
   },
   {
     path: "/signin",
     element: <SignInSignUp />,
+  },
+  {
+    path: "/account/edit",
+    element: (
+      <Update activeTab={0}>
+        <UpdateProfile></UpdateProfile>
+      </Update>
+    ),
+  },
+  {
+    path: "/account/password/change",
+    element: (
+      <Update activeTab={1}>
+        <UpdatePassword />
+      </Update>
+    ),
   },
 ]);
 
