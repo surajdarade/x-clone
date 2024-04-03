@@ -27,7 +27,7 @@ const Home = () => {
         <title>Home / X</title>
       </Helmet>
       <Toaster />
-      <div className="flex justify-between w-[80%] mx-auto mt-4">
+      <div className="flex justify-between w-[80%] mx-auto ">
         <LeftSidebar />
         <Outlet />
         <RightSidebar />

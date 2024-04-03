@@ -55,7 +55,7 @@ const RightSidebar = () => {
   };
 
   return (
-    <div className="w-[25%]">
+    <div className="w-[25%] mt-2">
       <SearchBox />
       <div className="p-4 bg-gray-100 rounded-2xl my-4">
         <h1 className="font-bold text-lg">Who to follow</h1>
