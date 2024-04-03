@@ -4,6 +4,8 @@ interface UserInterface extends Document {
   name: string;
   username: string;
   email: string;
+  avatar: string;
+  bio: string;
   password: string;
   followers: Types.ObjectId[];
   following: Types.ObjectId[];
@@ -25,6 +27,13 @@ const userModel = new mongoose.Schema<UserInterface>(
       type: String,
       required: true,
       unique: true,
+    },
+    avatar: {
+      type: String,
+    },
+    bio: {
+      type: String,
+      default: "Hi 😼 Welcome To My Profile!"
     },
     password: {
       type: String,
