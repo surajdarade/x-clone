@@ -3,10 +3,8 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
 
-// Resolve the absolute path to the .env file
 const envPath = path.resolve(__dirname, "../.env");
 
-// Load environment variables from the .env file
 dotenv.config({ path: envPath });
 
 const isAuthenticated = async (
