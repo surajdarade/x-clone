@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
-import { UserState } from "../../../store/userSlice";
+import toast, { Toaster } from "react-hot-toast";
+import { getUser, UserState } from "../../../store/userSlice";
+import default_profile from "../../../assets/default_profile.png";
+import axios from "axios";
+import { ClipLoader } from "react-spinners";
+import { Helmet } from "react-helmet";
 
 const UpdateProfile = () => {
   const dispatch = useDispatch();
@@ -16,14 +20,17 @@ const UpdateProfile = () => {
   const [oldAvatar, setOldAvatar] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const userCheck = /^[a-z0-9_.-]{6,25}$/gim;
 
-    if (!userCheck.test(username)) {
-      toast.error("Invalid Username");
+    if (!userCheck.test(username.toLowerCase())) {
+      toast.error(
+        "Username must start with a letter, should not contain special symbols and must be minimum 6 characters long!"
+      );
       return;
     }
 
@@ -35,6 +42,31 @@ const UpdateProfile = () => {
     if (avatar) {
       formData.set("avatar", avatar);
     }
+
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      axios.defaults.withCredentials = true;
+
+      const res = await axios.put(
+        "http://localhost:3000/api/v1/user/update/profile",
+        { _id: user?._id, name, username, bio, email, avatar },
+        config
+      );
+
+      if (res.data.success) {
+        dispatch(getUser(res?.data?.user));
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+    setLoading(false);
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +93,10 @@ const UpdateProfile = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Account information / X</title>
+      </Helmet>
+      <Toaster />
       <form
         onSubmit={handleUpdate}
         encType="multipart/form-data"
@@ -68,18 +104,33 @@ const UpdateProfile = () => {
       >
         <div className="flex items-center gap-8 ml-20">
           <div className="w-11 h-11">
-            <img
-              draggable="false"
-              className="w-full h-full rounded-full border object-cover"
-              src={avatarPreview ? avatarPreview : oldAvatar}
-              alt="avatar"
-            />
+            {user?.avatar ? (
+              <img
+                draggable="false"
+                className="w-full h-full rounded-full border object-cover"
+                src={user?.avatar}
+                alt="avatar"
+              />
+            ) : (
+              <img
+                draggable="false"
+                className="w-full h-full rounded-full border object-cover"
+                src={
+                  avatarPreview
+                    ? avatarPreview
+                      ? avatarPreview
+                      : oldAvatar
+                    : default_profile
+                }
+                alt="avatar"
+              />
+            )}
           </div>
           <div className="flex flex-col gap-0">
             <span className="text-xl">{username}</span>
             <label
               onClick={() => avatarInput.current?.click()}
-              className="text-sm font-medium text-primary-blue cursor-pointer"
+              className="text-sm font-medium text-blue-600 cursor-pointer"
             >
               Change Profile Photo
             </label>
@@ -94,53 +145,61 @@ const UpdateProfile = () => {
           </div>
         </div>
         <div className="flex w-full gap-8 text-right items-center">
-                    <span className="w-1/4 font-semibold">Name</span>
-                    <input
-                        className="border rounded p-1 w-3/4"
-                        type="text"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex w-full gap-8 text-right items-center">
-                    <span className="w-1/4 font-semibold">Username</span>
-                    <input
-                        className="border rounded p-1 w-3/4"
-                        type="text"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                
-                <div className="flex w-full gap-8 text-right items-start">
-                    <span className="w-1/4 font-semibold">Bio</span>
-                    <textarea
-                        className="border rounded outline-none resize-none p-1 w-3/4"
-                        name="bio"
-                        placeholder="Bio"
-                        rows={3}
-                        value={bio}
-                        onChange={(e) => setBio(e.target.value)}
-                        required
-                    >
-                    </textarea>
-                </div>
-                <div className="flex w-full gap-8 text-right items-center">
-                    <span className="w-1/4 font-semibold">Email</span>
-                    <input
-                        className="border rounded p-1 w-3/4"
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit" className="bg-primary-blue font-medium rounded-full bg-[#1D98F0] text-white py-2 w-40 mx-auto text-sm">Submit</button>
+          <span className="w-1/4 font-semibold">Name</span>
+          <input
+            className="border rounded p-1 w-3/4"
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex w-full gap-8 text-right items-center">
+          <span className="w-1/4 font-semibold">Username</span>
+          <input
+            className="border rounded p-1 w-3/4"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="flex w-full gap-8 text-right items-start">
+          <span className="w-1/4 font-semibold">Bio</span>
+          <textarea
+            className="border rounded outline-none resize-none p-1 w-3/4"
+            name="bio"
+            placeholder="Bio"
+            rows={3}
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            required
+          ></textarea>
+        </div>
+        <div className="flex w-full gap-8 text-right items-center">
+          <span className="w-1/4 font-semibold">Email</span>
+          <input
+            className="border rounded p-1 w-3/4"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-primary-blue font-medium rounded-full bg-[#1D98F0] text-white py-2 w-40 mx-auto text-sm"
+        >
+          {loading ? (
+            <ClipLoader color={"#ffffff"} loading={true} size={20} /> // Display spinner when loading
+          ) : (
+            "Update Profile"
+          )}
+        </button>
       </form>
     </>
   );
