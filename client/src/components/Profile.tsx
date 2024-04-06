@@ -1,13 +1,20 @@
 import { Link, useParams } from "react-router-dom";
 import banner from "../assets/banner.jpg";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import Avatar from "react-avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
 import useGetProfile from "../hooks/useGetProfile";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { getRefresh } from "../store/tweetSlice";
+import { getRefresh, TweetState } from "../store/tweetSlice";
+import default_profile from "../assets/default_profile.png";
+import { IoLocationOutline } from "react-icons/io5";
+import { SlCalender } from "react-icons/sl";
+import joinedOn from "../utils/joinedOnFunction";
+import { Helmet } from "react-helmet";
+import Tweet from "./Tweet";
+import useGetProfileTweets from "../hooks/useGetProfileTweets";
+
 const Profile = () => {
   const { user, profile } = useSelector(
     (store: { user: UserState }) => store.user
@@ -16,6 +23,10 @@ const Profile = () => {
   const { id } = useParams<{ id: string }>();
 
   const dispatch = useDispatch();
+
+  useGetProfileTweets(id || "");
+
+  const { tweets } = useSelector((store: { tweet: TweetState }) => store.tweet);
 
   const followUnfollowHandler = async () => {
     // unfollow
@@ -43,7 +54,7 @@ const Profile = () => {
         dispatch(getFollowUnfollowUpdate(id || ""));
         dispatch(getRefresh());
         toast.success(res.data.message);
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error.response.data.message);
         console.log(error);
       }
@@ -55,8 +66,22 @@ const Profile = () => {
 
   return (
     <>
-      <div className="w-[50%] border-l border-r border-gray-200">
-        <div>
+      {profile ? (
+        <Helmet>
+          <title>
+            {profile?.name} (@{profile?.username}) / X
+          </title>
+        </Helmet>
+      ) : (
+        <Helmet>
+          <title>
+            {user?.name} (@{user?.username}) / X
+          </title>
+        </Helmet>
+      )}
+
+      <div className="w-[50%] border-l border-r border-gray-300">
+        <div className="border-b border-gray-300">
           <div className="flex items-center py-2">
             <Link
               to="/"
@@ -71,13 +96,18 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <img src={banner} alt="banner" />
-          <div className="absolute top-52 ml-2 border-4 border-white rounded-full">
-            <Avatar
-              src="https://thumbs.dreamstime.com/z/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg?w=768"
-              size="120"
-              round={true}
-            />
+          <img src={banner} alt="banner" className="h-44" />
+          <div className="absolute top-44 ml-2 border-4 border-white rounded-full">
+            {profile?.avatar ? (
+              <img
+                src={profile?.avatar}
+                alt="profile"
+                className="w-28 h-28 rounded-full object-cover"
+              />
+            ) : (
+              <img src={default_profile} alt="profile" className="h-28" />
+            )}
+            {/* <img src={default_profile} alt="profile" className="h-28" /> */}
           </div>
           <div className="text-right m-4">
             {profile?._id == user?._id ? (
@@ -85,7 +115,7 @@ const Profile = () => {
                 to="/account/edit"
                 className="px-4 py-1 rounded-full hover:bg-gray-100 border border-gray-600"
               >
-                Edit Profile
+                Edit profile
               </Link>
             ) : (
               <button
@@ -96,12 +126,24 @@ const Profile = () => {
               </button>
             )}
           </div>
-          <div className="m-4 mt-20">
+          <div className="m-4 mt-6">
             <h1 className="font-semibold text-xl">{profile?.name}</h1>
             <p className="text-gray-500 text-sm">{`@${profile?.username}`}</p>
           </div>
           <div className="m-4 text-sm">
             <p>{profile?.bio}</p>
+          </div>
+          <div className="flex">
+            <div className="ml-5 flex">
+              <IoLocationOutline />
+              <p className="text-sm ml-2">India</p>
+            </div>
+            <div className="ml-5 flex">
+              <SlCalender />
+              <p className="text-sm ml-2">
+                Joined {joinedOn(profile?.createdAt || "")}
+              </p>
+            </div>
           </div>
           <div className="m-4 flex text-sm">
             <p className="font-bold mr-2">{profile?.following.length}</p>
@@ -110,6 +152,9 @@ const Profile = () => {
             <p>Followers</p>
           </div>
         </div>
+        {tweets?.map((tweet) => (
+          <Tweet key={tweet?._id} tweet={tweet} />
+        ))}
       </div>
     </>
   );

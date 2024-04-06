@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import Tweet from "./Tweet";
 import { TweetState } from "../store/tweetSlice";
 import useGetMyBookmarks from "../hooks/useGetMyBookmarks";
+import { Helmet } from "react-helmet";
 
 const Bookmark = () => {
   const { user } = useSelector((store: { user: UserState }) => store.user);
@@ -13,6 +14,9 @@ const Bookmark = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Bookmarks / X</title>
+      </Helmet>
       <Toaster />
       <div className="w-[50%] border border-gray-20">
         <div>

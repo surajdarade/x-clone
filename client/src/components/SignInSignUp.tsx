@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getUser } from "../store/userSlice";
 import { ClipLoader } from "react-spinners";
+import { Helmet } from "react-helmet";
+
 const SignInSignUp = () => {
   const [signIn, setSignIn] = useState(true);
   const [name, setName] = useState("");
@@ -38,7 +40,7 @@ const SignInSignUp = () => {
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     } else {
       // SIGN UP
@@ -109,6 +111,9 @@ const SignInSignUp = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>X. It's what's happening / X</title>
+      </Helmet>
       <Toaster />
       <div className="w-screen h-screen flex items-center justify-center">
         <div className="flex items-center justify-evenly w-[80%]">
@@ -131,6 +136,7 @@ const SignInSignUp = () => {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Name"
                     className="outline-blue-400 border border-gray-400 px-3 py-2 rounded-full my-1"
+                    required
                   />
                   <input
                     type="text"

@@ -7,7 +7,7 @@ import {
   CiCircleMore,
   CiLogout,
 } from "react-icons/ci";
-import { PiBellLight } from "react-icons/pi";
+import { PiBellLight, PiDotsThreeBold } from "react-icons/pi";
 import { LiaClipboardListSolid } from "react-icons/lia";
 import { BsPeople } from "react-icons/bs";
 import { GoHome } from "react-icons/go";
@@ -16,9 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../store/userSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { tweetSliceReset } from "../store/tweetSlice";
-
+import { getIsActive, tweetSliceReset } from "../store/tweetSlice";
+import default_profile from "../assets/default_profile.png";
 import { userSliceReset } from "../store/userSlice";
+// import Avatar from "react-avatar";
 const LeftSidebar = () => {
   const { user } = useSelector((store: { user: UserState }) => store.user);
 
@@ -39,99 +40,160 @@ const LeftSidebar = () => {
 
   return (
     <>
-      <div className="w-[20%]">
+      <div className="md:w-[20%]">
         <div>
-          <Link to="/">
-            <img className="ml-4 rounded-full py-3 px-2 hover:bg-gray-200" src={x} width={"50px"} alt="x-logo"></img>
+          <Link
+            to="/"
+            onClick={() => {
+              dispatch(getIsActive(true));
+            }}
+          >
+            <img
+              className="md:ml-1 rounded-full py-3 px-2 hover:bg-gray-200 mt-4"
+              src={x}
+              width={"50px"}
+              alt="x-logo"
+            ></img>
           </Link>
           <div className="my-4">
             <Link
               to="/"
-              className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer"
+              onClick={() => {
+                dispatch(getIsActive(true));
+              }}
+              className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-32"
             >
               <div>
                 <GoHome size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Home</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Home
+              </h1>
             </Link>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <div className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-36">
               <div>
                 <CiSearch size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Explore</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Explore
+              </h1>
             </div>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <div className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-44">
               <div>
                 <PiBellLight size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Notifications</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Notifications
+              </h1>
             </div>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <div className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-36">
               <div>
                 <CiMail size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Messages</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Messages
+              </h1>
             </div>
-            <Link to={`/bookmark/${user?._id}`} className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <Link
+              to={`/bookmark/${user?._id}`}
+              className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-40"
+            >
               <div>
                 <CiHashtag size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Bookmarks</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Bookmarks
+              </h1>
             </Link>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <div className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-28">
               <div>
                 <LiaClipboardListSolid size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Lists</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Lists
+              </h1>
             </div>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <div className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-44">
               <div>
                 <BsPeople size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Communities</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Communities
+              </h1>
             </div>
             <Link
               to={`/profile/${user?._id}`}
-              className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer"
+              className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-32"
             >
               <div>
                 <CiUser size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Profile</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Profile
+              </h1>
             </Link>
-            <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer">
+            <div className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-28">
               <div>
                 <CiCircleMore size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">More</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                More
+              </h1>
             </div>
             <div
               onClick={logoutHandler}
-              className="flex items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer"
+              className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-36"
             >
               <div>
                 <CiLogout size="24px" />
               </div>
 
-              <h1 className="font-semibold text-lg ml-2">Logout</h1>
+              <h1 className="font-semibold text-lg ml-2 hidden sm:block">
+                Logout
+              </h1>
             </div>
-            <Link
-              to="/"
-              className="px-20 py-3 border-none text-lg font-semibold bg-[#1D98F0] text-white w-full rounded-full"
-            >
-              Post
-            </Link>
           </div>
+          <Link
+            to="/"
+            className="hover:animate-pulse md:px-20 sm:px-8 py-3 border-none text-lg font-semibold bg-[#1D98F0] text-white md:w-full rounded-full sm:w-5"
+          >
+            Post
+          </Link>
         </div>
+        <Link
+          to={`/profile/${user?._id}`}
+          className="rounded-full items-center px-4 py-4 cursor-pointer"
+        >
+          <div className="flex">
+            {user?.avatar ? (
+              <img 
+                src={user?.avatar}
+                alt="profile"
+                className="w-11 h-11 rounded-full object-cover"
+              />
+            ) : (
+              <img src={default_profile} alt="profile" className="h-10" />
+            )}
+
+            <h1 className="font-semibold text-lg ml-2 hidden sm:block -mt-1">
+              {user?.name}
+            </h1>
+            <PiDotsThreeBold className="ml-8 mt-2" size="30" />
+          </div>
+
+          <h2 className="-mt-5 font-sm text-gray-500 ml-12 hidden sm:block">
+            {`@${user?.username}`}
+          </h2>
+        </Link>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import Avatar from "react-avatar";
+// import Avatar from "react-avatar";
 import { useSelector } from "react-redux";
 import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
 import useOtherUsers from "../hooks/useOtherUsers";
@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import SearchBox from "./SearchBox";
+import default_profile from "../assets/default_profile.png";
 
 const RightSidebar = () => {
   const { user, otherUsers } = useSelector(
@@ -64,23 +65,29 @@ const RightSidebar = () => {
           return (
             <div
               key={otherUser?._id}
-              className="flex items-center justify-between my-3"
+              className="md:flex items-center justify-between my-3"
             >
               <div className="flex">
-                <Avatar
-                  src="https://thumbs.dreamstime.com/z/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg?w=768"
-                  size="40"
-                  round={true}
-                />
+                {otherUser?.avatar ? (
+                  <img
+                    src={otherUser?.avatar}
+                    alt="profile"
+                    className="w-9 h-9 rounded-full object-cover"
+                  />
+                ) : (
+                  <img src={default_profile} alt="profile" className="h-9" />
+                )}
                 <Link to={`/profile/${otherUser?._id}`} className="ml-2">
-                  <h1 className="font-semibold">{otherUser?.name}</h1>
-                  <p className="text-sm">{`@${otherUser?.username}`}</p>
+                  <h1 className="font-semibold hover:underline md:-mt-1">
+                    {otherUser?.name}
+                  </h1>
+                  <p className="text-sm md:-mt-1">{`@${otherUser?.username}`}</p>
                 </Link>
               </div>
               <div>
                 <button
                   onClick={() => followUnfollowHandler(otherUser?._id)}
-                  className="px-4 py-1 rounded-full bg-black text-white"
+                  className="hover:animate-pulse px-4 py-1 rounded-full bg-black text-white"
                 >
                   {user?.following.includes(otherUser?._id || "")
                     ? "Unfollow"

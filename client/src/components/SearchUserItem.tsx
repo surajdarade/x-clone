@@ -1,10 +1,11 @@
-import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
+import default_profile from "../assets/default_profile.png";
 
 interface User {
   _id: string;
   username: string;
   name: string;
+  avatar: string;
 }
 
 interface SearchUserItemProps {
@@ -19,11 +20,15 @@ const SearchUserItem: React.FC<SearchUserItemProps> = ({ user }) => {
     >
       {" "}
       <div className="flex space-x-3 items-center">
-        <Avatar
-          src="https://thumbs.dreamstime.com/z/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg?w=768"
-          size="40"
-          round={true}
-        />
+        {user?.avatar ? (
+          <img
+            src={user?.avatar}
+            alt="profile"
+            className="w-11 h-11 rounded-full object-cover"
+          />
+        ) : (
+          <img src={default_profile} alt="profile" className="h-10" />
+        )}
         <div className="flex flex-col items-start">
           <span className="text-black text-sm font-semibold">
             {user.username}
