@@ -38,8 +38,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         { withCredentials: true }
       );
       dispatch(getRefresh());
-      
-      
+
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -79,7 +78,6 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
       console.log(error);
     }
   };
-
 
   return (
     <>
