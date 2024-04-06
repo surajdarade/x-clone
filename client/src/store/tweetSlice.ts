@@ -11,6 +11,7 @@ export interface UserDetails {
   name: string;
   username: string;
   email: string;
+  avatar: string;
 }
 
 interface Tweet {
@@ -19,6 +20,7 @@ interface Tweet {
   userId: string;
   description: string;
   like: string[];
+  postImage: string;
   userDetails: UserDetails[];
   createdAt: string;
 }

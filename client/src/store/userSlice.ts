@@ -17,6 +17,7 @@ export interface User {
   following: string[];
   followers: string[];
   bookmarks: string[];
+  createdAt: string;
   tweetCount: number;
 }
 
@@ -31,6 +32,7 @@ export interface Profile {
   following: string[];
   followers: string[];
   bookmarks: string[];
+  createdAt: string;
   tweetCount: number;
 }
 
@@ -45,6 +47,7 @@ export interface OtherUser {
   following: string[];
   followers: string[];
   bookmarks: string[];
+  createdAt: string;
   tweetCount: number;
 }
 
