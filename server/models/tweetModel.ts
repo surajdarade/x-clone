@@ -1,10 +1,11 @@
 import mongoose, { Document, Model, Types } from "mongoose";
 
-interface UserDetails {
+export interface UserDetails {
   _id: Types.ObjectId;
   name: string;
   username: string;
   email: string;
+  avatar: string;
 }
 
 interface TweetInterface extends Document {
@@ -12,6 +13,8 @@ interface TweetInterface extends Document {
   userDetails: UserDetails[];
   like: Types.ObjectId[];
   description: string;
+  postImage: string;
+  createdAt: string;
 }
 
 const tweetModel = new mongoose.Schema<TweetInterface>(
@@ -24,6 +27,9 @@ const tweetModel = new mongoose.Schema<TweetInterface>(
     description: {
       type: String,
       required: true,
+    },
+    postImage: {
+      type: String,
     },
     like: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
@@ -45,6 +51,9 @@ const tweetModel = new mongoose.Schema<TweetInterface>(
           required: true,
         },
         email: {
+          type: String,
+        },
+        avatar: {
           type: String,
         },
       },

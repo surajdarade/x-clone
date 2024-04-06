@@ -1,4 +1,5 @@
 import mongoose, { Document, Model, Types } from "mongoose";
+import bcrypt from "bcrypt";
 
 interface UserInterface extends Document {
   name: string;
@@ -10,6 +11,7 @@ interface UserInterface extends Document {
   followers: Types.ObjectId[];
   following: Types.ObjectId[];
   bookmarks: Types.ObjectId[];
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userModel = new mongoose.Schema<UserInterface>(
@@ -54,6 +56,10 @@ const userModel = new mongoose.Schema<UserInterface>(
   },
   { timestamps: true }
 );
+
+userModel.methods.comparePassword = async function(this: UserInterface, enteredPassword: string): Promise<boolean> {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 export const UserModel: Model<UserInterface> = mongoose.model(
   "User",
