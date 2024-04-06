@@ -2,16 +2,16 @@ const timeSince = (timestamp: string): string => {
     const time = Date.parse(timestamp);
     const now = Date.now();
     const secondsPast = (now - time) / 1000;
-    const suffix = 'ago';
+    // const suffix = 'ago';
 
     const intervals: { [key: string]: number } = {
-        year: 31536000,
-        month: 2592000,
-        week: 604800,
-        day: 86400,
-        hour: 3600,
-        minute: 60,
-        second: 1
+        y: 31536000,
+        mon: 2592000,
+        w: 604800,
+        d: 86400,
+        h: 3600,
+        min: 60,
+        s: 1
     };
 
     for (const key in intervals) {
@@ -19,7 +19,7 @@ const timeSince = (timestamp: string): string => {
             const interval = intervals[key];
             if (secondsPast >= interval) {
                 const count = Math.floor(secondsPast / interval);
-                return `${count} ${key}${count > 1 ? 's' : ''} ${suffix}`;
+                return `${count}${key}`;
             }
         }
     }
