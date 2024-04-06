@@ -10,7 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
 import timeSince from "../utils/timeFunction";
 import { FcLike } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import default_profile from "../assets/default_profile.png";
 
 interface TweetProps {
