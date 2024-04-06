@@ -10,8 +10,11 @@ import {
   SignIn,
   SignUp,
   unfollow,
+  updateProfile,
+  updatePassword,
 } from "../controllers/userController";
 import isAuthenticated from "../middlewares/auth";
+import { uploadAvatar } from "../utils/awsFunctions";
 
 const router = express.Router();
 
@@ -25,5 +28,12 @@ router.get("/otherUsers/:_id", isAuthenticated, getOtherUsers);
 router.post("/follow/:id", isAuthenticated, follow);
 router.post("/unfollow/:id", isAuthenticated, unfollow);
 router.get("/users", isAuthenticated, searchUsers);
+router.put(
+  "/update/profile",
+  isAuthenticated,
+  uploadAvatar.single("avatar"),
+  updateProfile
+);
+router.put("/update/password", isAuthenticated, updatePassword);
 
 export default router;

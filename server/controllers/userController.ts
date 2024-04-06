@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserModel } from "../models/userModel";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -6,6 +6,20 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { TweetModel } from "../models/tweetModel";
+import { deleteFile } from "../utils/awsFunctions";
+
+interface File {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+  buffer: Buffer;
+  location?: string;
+}
 
 const envPath = path.resolve(__dirname, "../.env");
 
@@ -43,7 +57,7 @@ export const SignUp = async (req: Request, res: Response) => {
     });
 
     return res.status(200).json({
-      message: "Account created successfully!",
+      message: "Account Created Successfully!",
       success: true,
     });
   } catch (error) {
@@ -158,7 +172,6 @@ export const getMyBookmarks = async (req: Request, res: Response) => {
   try {
     const loggedInUserId = req.params._id;
 
-    // Find the user by ID
     const user = await UserModel.findById(loggedInUserId).select(
       "-id -name -username -email -password -createdAt -updatedAt -followers -following -__v"
     );
@@ -167,10 +180,9 @@ export const getMyBookmarks = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, error: "User not found" });
     }
 
-    // Fetch details of tweets corresponding to each bookmark ID
     const bookmarkedTweets = await TweetModel.find({
-      _id: { $in: user.bookmarks }, // Access the bookmarks directly from the user object
-    });
+      _id: { $in: user.bookmarks },
+    }).sort({ createdAt: -1 });
 
     return res.status(200).json({ tweets: bookmarkedTweets, success: true });
   } catch (error) {
@@ -350,6 +362,143 @@ export const searchUsers = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Internal server error",
+    });
+  }
+};
+
+// UPDATE PROFILE
+
+export interface CustomFile extends File {
+  location?: string; 
+}
+
+export const updateProfile = async (
+  req: Request & { file?: CustomFile },
+  res: Response
+) => {
+  try {
+    const { _id, name, username, bio, email } = req.body;
+
+    const newUserData: Partial<{
+      name: string;
+      username: string;
+      bio: string;
+      email: string;
+      avatar: string;
+    }> = {
+      name,
+      username,
+      bio,
+      email,
+    };
+
+    const userExists = await UserModel.findOne({
+      $or: [{ email }, { username }],
+    });
+
+    if (userExists && userExists._id.toString() !== _id.toString()) {
+      return res.status(404).json({
+        success: false,
+        message: "User Already Exists!",
+      });
+    }
+
+    if (req.file && req.file.location) {
+      const user = await UserModel.findById(_id);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found!",
+        });
+      }
+
+      if (user.avatar) {
+        // Delete previous avatar file if it exists
+        await deleteFile(user.avatar);
+      }
+
+      newUserData.avatar = req.file.location;
+    }
+
+    const updatedUser = await UserModel.findByIdAndUpdate(_id, newUserData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile Updated Successfully!",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+// UPDATE PASSWORD
+
+export const updatePassword = async (req: Request, res: Response) => {
+  try {
+    const { _id, oldPassword, newPassword } = req.body;
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!newPassword.match(passwordRegex)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and be at least 6 characters long.",
+      });
+    }
+
+    const user = await UserModel.findById(_id).select("+password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    const isPasswordMatched = await bcryptjs.compare(
+      oldPassword,
+      user.password
+    );
+
+    if (!isPasswordMatched) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Old Password!",
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash(newPassword, 16);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Password Changed Successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
     });
   }
 };

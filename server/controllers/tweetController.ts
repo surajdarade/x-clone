@@ -1,10 +1,26 @@
 import { Request, Response } from "express";
 import { TweetModel } from "../models/tweetModel";
 import { UserModel } from "../models/userModel";
+import { CustomFile } from "./userController";
+import { UserDetails } from "../models/tweetModel";
 
-export const createTweet = async (req: Request, res: Response) => {
+export const createTweet = async (
+  req: Request & { file?: CustomFile },
+  res: Response
+) => {
   try {
-    const { description, id } = req.body;
+    const { description, id, postImage } = req.body;
+
+    const tweetData: Partial<{
+      description: string;
+      userId: string;
+      userDetails: UserDetails[];
+      postImage: string;
+    }> = {
+      description,
+      userId: id,
+      userDetails: [],
+    };
 
     if (!description || !id) {
       return res
@@ -16,17 +32,26 @@ export const createTweet = async (req: Request, res: Response) => {
       "-password -bookmarks -following -followers -createdAt -updatedAt"
     );
 
-    await TweetModel.create({
-      description,
-      userId: id,
-      userDetails: user,
-    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (req.file && req.file.location) {
+      tweetData.userDetails?.push(user);
+      tweetData.postImage = req.file.location;
+    } else {
+      tweetData.userDetails?.push(user);
+    }
+    await TweetModel.create(tweetData);
 
     return res
       .status(201)
       .json({ message: "Tweet posted successfully!", success: true });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
   }
 };
 
@@ -75,30 +100,31 @@ export const likeOrDislike = async (req: Request, res: Response) => {
 // GET ALL TWEETS CONTROLLER
 
 export const getAllTweets = async (req: Request, res: Response) => {
-  // Logged in + Following user tweets
-
   try {
     const id = req.params.id;
-
     const loggedInUser = await UserModel.findById(id);
-
     if (!loggedInUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const loggedInUserTweets = await TweetModel.find({ userId: loggedInUser });
-
+    const loggedInUserTweets = await TweetModel.find({
+      userId: loggedInUser,
+    }).sort({ createdAt: -1 });
     const followingUserTweets = await Promise.all(
       loggedInUser.following.map((otherUserId) => {
-        return TweetModel.find({ userId: otherUserId });
+        return TweetModel.find({ userId: otherUserId }).sort({ createdAt: -1 });
       })
     );
 
-    return res
-      .status(200)
-      .json({ tweets: loggedInUserTweets.concat(...followingUserTweets) });
+    const allTweets = loggedInUserTweets.concat(...followingUserTweets);
+    const sortedTweets = allTweets.sort((a, b) =>
+      new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
+    );
+
+    return res.status(200).json({ tweets: sortedTweets });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -107,24 +133,47 @@ export const getAllTweets = async (req: Request, res: Response) => {
 export const getFollowingTweets = async (req: Request, res: Response) => {
   try {
     const id = req.params._id;
-
     const loggedInUser = await UserModel.findById(id);
-
     if (!loggedInUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const followingUserTweets = await Promise.all(
       loggedInUser.following.map((otherUserId) => {
-        return TweetModel.find({ userId: otherUserId });
+        return TweetModel.find({ userId: otherUserId }).sort({ createdAt: -1 });
       })
     );
 
-    return res
-  .status(200)
-  .json({ tweets: ([] as any[]).concat(...followingUserTweets) });
+    const allTweets = ([] as any[]).concat(...followingUserTweets);
+    const sortedTweets = allTweets.sort((a, b) =>
+      new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
+    );
 
+    return res.status(200).json({ tweets: sortedTweets });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+// GET PROFILE TWEETS ONLY
+
+// GET FOLLOWING TWEETS ONLY
+
+export const getProfileTweets = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params._id;
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const profileTweets = await TweetModel.find({ userId }).sort({ createdAt: -1 });
+
+    return res.status(200).json({ tweets: profileTweets });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

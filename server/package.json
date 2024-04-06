@@ -10,11 +10,12 @@
   "author": "Suraj Darade",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.507.0",
+    "@aws-sdk/client-s3": "^3.540.0",
     "@sendgrid/mail": "^8.1.0",
     "@types/bcryptjs": "^2.4.6",
     "aws-sdk": "^2.1552.0",
     "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cloudinary": "^2.0.0",
