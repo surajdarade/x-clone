@@ -151,7 +151,7 @@ const LeftSidebar = () => {
             </div>
             <div
               onClick={logoutHandler}
-              className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-36"
+              className="flex hover:animate-pulse items-center my-2 px-4 py-2 hover:bg-gray-200 rounded-full cursor-pointer md:w-32"
             >
               <div>
                 <CiLogout size="24px" />

@@ -141,7 +141,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                       <CiHeart size="24px" />
                     )}
                   </div>
-                  <p>{tweet?.like?.length}</p>
+                  <p>{tweet?.like?.length >= 1 ? tweet?.like?.length : ""}</p>
                 </div>
                 <div
                   onClick={() => bookmarkHandler(tweet?._id)}
