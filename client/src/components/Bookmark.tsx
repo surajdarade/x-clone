@@ -18,13 +18,19 @@ const Bookmark = () => {
         <title>Bookmarks / X</title>
       </Helmet>
       <Toaster />
-      <div className="w-[50%] border border-gray-20">
-        <div>
-          {tweets?.map((tweet) => (
-            <Tweet key={tweet?._id} tweet={tweet} />
-          ))}
+      {tweets?.length != 0 ? (
+        <div className="w-[50%] border border-gray-20">
+          <div>
+            {tweets?.map((tweet) => (
+              <Tweet key={tweet?._id} tweet={tweet} />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-[50%] border border-gray-20 flex justify-center items-center h-screen">
+          <h1 className="text-center text-2xl">No bookmarks😒 </h1>
+        </div>
+      )}
     </>
   );
 };
