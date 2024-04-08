@@ -6,9 +6,11 @@ import default_profile from "../../../assets/default_profile.png";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const avatarInput = useRef<HTMLInputElement>(null);
 
   const { user } = useSelector((store: { user: UserState }) => store.user);
@@ -90,6 +92,12 @@ const UpdateProfile = () => {
       setOldAvatar(user.avatar);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/signin");
+    }
+  }, [user]);
 
   return (
     <>

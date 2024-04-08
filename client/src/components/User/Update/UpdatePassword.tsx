@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserState } from "../../../store/userSlice";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
@@ -6,9 +6,12 @@ import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import default_profile from "../../../assets/default_profile.png";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 
 const UpdatePassword = () => {
   const { user } = useSelector((store: { user: UserState }) => store.user);
+
+  const navigate = useNavigate();
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -50,6 +53,13 @@ const UpdatePassword = () => {
     setNewPassword("");
     setConfirmPassword("");
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/signin");
+    }
+  }, [user]);
+
   return (
     <>
       <Helmet>
