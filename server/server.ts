@@ -1,7 +1,9 @@
 import * as dotenv from "dotenv";
 import connectToDatabase from "./config/database";
 import app from "./app";
+import cors from "cors";
 
+app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 
@@ -12,6 +14,5 @@ dotenv.config();
 connectToDatabase();
 
 app.listen(PORT, () => {
-    console.log(`Server Running on http://localhost:${PORT} 🚀`);
+  console.log(`Server Running on http://localhost:${PORT} 🚀`);
 });
-
