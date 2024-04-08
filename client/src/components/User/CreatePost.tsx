@@ -53,7 +53,7 @@ const CreatePost = () => {
       }
 
       const res = await axios.post(
-        `http://localhost:3000/api/v1/tweet/create`,
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/tweet/create`,
         formData,
         { withCredentials: true }
       );

@@ -33,7 +33,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
   const likeOrDislikeHandler = async (_id: string) => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/v1/tweet/like/${_id}`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/api/v1/tweet/like/${_id}`,
         { id: user?._id },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
   const bookmarkHandler = async (_id: string) => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/v1/user/bookmark/${_id}`,
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/bookmark/${_id}`,
         { id: user?._id },
         { withCredentials: true }
       );
@@ -68,7 +68,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.delete(
-        `http://localhost:3000/api/v1/tweet/delete/${id}`
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/v1/tweet/delete/${id}`
       );
       dispatch(getRefresh());
       if (res.data.success) {

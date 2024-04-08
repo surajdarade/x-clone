@@ -13,7 +13,7 @@ const useGetMyTweets = (_id: string) => {
   const fetchFollowingTweets = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/tweet/followingTweets/${_id}`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/api/v1/tweet/followingTweets/${_id}`,
         { withCredentials: true }
       );
       dispatch(getAllTweets(res.data.tweets));

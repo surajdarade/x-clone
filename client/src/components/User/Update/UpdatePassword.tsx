@@ -38,7 +38,7 @@ const UpdatePassword = () => {
         },
       };
       const res = await axios.put(
-        "http://localhost:3000/api/v1/user/update/password",
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/update/password`,
         { _id: user?._id, oldPassword, newPassword },
         config
       );

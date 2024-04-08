@@ -9,7 +9,7 @@ const useGetProfile = (_id: string) => {
     const fetchMyProfile = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/v1/user/profile/${_id}`,
+          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/profile/${_id}`,
           { withCredentials: true }
         );
         dispatch(getMyProfile(res.data.profile));

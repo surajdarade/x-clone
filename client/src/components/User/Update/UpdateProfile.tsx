@@ -56,7 +56,7 @@ const UpdateProfile = () => {
       axios.defaults.withCredentials = true;
 
       const res = await axios.put(
-        "http://localhost:3000/api/v1/user/update/profile",
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/update/profile`,
         { _id: user?._id, name, username, bio, email, avatar },
         config
       );
