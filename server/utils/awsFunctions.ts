@@ -3,13 +3,6 @@ import multerS3 from "multer-s3";
 import path from "path";
 import { S3Client, DeleteObjectsCommand } from "@aws-sdk/client-s3";
 
-// Initialize AWS S3 configuration
-// const s3Config: S3Client = new aws.S3({
-//     accessKeyId: process.env.AWS_IAM_USER_KEY,
-//     secretAccessKey: process.env.AWS_IAM_USER_SECRET,
-//     region: process.env.AWS_REGION
-// });
-
 const s3Config = new S3Client({
   region: process.env.AWS_BUCKET_REGION!,
   credentials: {
