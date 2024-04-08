@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { UserState } from "../store/userSlice";
+import { UserState } from "../../store/userSlice";
 import { Toaster } from "react-hot-toast";
-import useOtherUsers from "../hooks/useOtherUsers";
+import useOtherUsers from "../../hooks/useOtherUsers";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import { Outlet } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const { user } = useSelector((store: { user: UserState }) => store.user);
@@ -41,6 +42,9 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Helmet>
       <Toaster />
       <div className="flex justify-between w-[80%] mx-auto scroll-smooth">
         <LeftSidebar />

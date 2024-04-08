@@ -124,10 +124,10 @@ const SignInSignUp = () => {
             <div className="my-5">
               <h1 className="font-bold text-6xl">Happening now</h1>
             </div>
-            <h1 className="mt-4 mb-2 text-2xl font-medium">
+            <h1 className="mt-4 mb-3 ml-2 text-2xl font-medium">
               {signIn ? "Sign in" : "Sign up"}
             </h1>
-            <form className="flex flex-col w-[60%]" onSubmit={submitHandler}>
+            <form className="flex flex-col md:w-[60%]" onSubmit={submitHandler}>
               {!signIn && (
                 <>
                   <input
@@ -180,7 +180,7 @@ const SignInSignUp = () => {
                 {signIn ? "Don't have an account?" : "Already have an account?"}
               </h1>
               <button
-                className="border py-1 my-2 border-gray-500 rounded-full hover:text-blue-500"
+                className="border py-1 my-2 border-gray-500 rounded-full hover:text-blue-700"
                 onClick={signInSignUpHandler}
               >
                 {signIn ? "Sign up" : "Sign in"}

@@ -2,16 +2,16 @@
 import { FaRegComment } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
-import { getRefresh, UserDetails } from "../store/tweetSlice";
+import { getRefresh, UserDetails } from "../../store/tweetSlice";
 import axios from "axios";
-import { getBookmarks, UserState } from "../store/userSlice";
+import { getBookmarks, UserState } from "../../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-import { MdDeleteOutline } from "react-icons/md";
-import timeSince from "../utils/timeFunction";
+import { MdDeleteOutline, MdVerified } from "react-icons/md";
+import timeSince from "../../utils/timeFunction";
 import { FcLike } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import default_profile from "../assets/default_profile.png";
+import default_profile from "../../assets/default_profile.png";
 
 interface TweetProps {
   tweet: {
@@ -43,7 +43,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.res.data.message);
     }
   };
 
@@ -60,7 +60,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.res.data.message);
     }
   };
 
@@ -75,7 +75,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.res.data.message);
     }
   };
 
@@ -103,6 +103,12 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
                 <h1 className="font-semibold hover:underline">
                   {tweet?.userDetails[0].name}
                 </h1>
+                {tweet?.userDetails[0].name == "X" && (
+                  <MdVerified
+                    className="ml-1"
+                    style={{ color: "#D18800" }}
+                  />
+                )}
                 <p className="text-gray-500 text-sm ml-1">
                   {`@${tweet?.userDetails[0].username}`} .{" "}
                   {timeSince(tweet?.createdAt)}

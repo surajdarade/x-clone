@@ -1,4 +1,4 @@
-import x from "../assets/x.png";
+import x from "../../assets/x.png";
 import {
   CiHashtag,
   CiSearch,
@@ -11,19 +11,21 @@ import { PiBellLight, PiDotsThreeBold } from "react-icons/pi";
 import { LiaClipboardListSolid } from "react-icons/lia";
 import { BsPeople } from "react-icons/bs";
 import { GoHome } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { UserState } from "../store/userSlice";
+import { UserState } from "../../store/userSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { getIsActive, tweetSliceReset } from "../store/tweetSlice";
-import default_profile from "../assets/default_profile.png";
-import { userSliceReset } from "../store/userSlice";
-// import Avatar from "react-avatar";
+import { getIsActive, tweetSliceReset } from "../../store/tweetSlice";
+import default_profile from "../../assets/default_profile.png";
+import { MdVerified } from "react-icons/md";
+import { userSliceReset } from "../../store/userSlice";
+
 const LeftSidebar = () => {
   const { user } = useSelector((store: { user: UserState }) => store.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoutHandler = async () => {
     try {
@@ -31,6 +33,8 @@ const LeftSidebar = () => {
 
       dispatch(userSliceReset());
       dispatch(tweetSliceReset());
+
+      navigate("/signin");
 
       toast.success(res.data.message);
     } catch (error) {
@@ -175,7 +179,7 @@ const LeftSidebar = () => {
         >
           <div className="flex">
             {user?.avatar ? (
-              <img 
+              <img
                 src={user?.avatar}
                 alt="profile"
                 className="w-11 h-11 rounded-full object-cover"
@@ -187,7 +191,10 @@ const LeftSidebar = () => {
             <h1 className="font-semibold text-lg ml-2 hidden sm:block -mt-1">
               {user?.name}
             </h1>
-            <PiDotsThreeBold className="ml-8 mt-2" size="30" />
+            {user?.name == "X" && (
+              <MdVerified className="ml-2 mt-1" style={{ color: "#D18800" }} />
+            )}
+            <PiDotsThreeBold className="ml-12 mt-1" size="30" />
           </div>
 
           <h2 className="-mt-5 font-sm text-gray-500 ml-12 hidden sm:block">

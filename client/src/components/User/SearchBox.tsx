@@ -8,6 +8,7 @@ interface User {
   _id: string;
   username: string;
   name: string;
+  avatar: string;
 }
 
 const SearchBox: React.FC = () => {

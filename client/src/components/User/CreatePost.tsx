@@ -4,10 +4,10 @@ import { CiImageOn, CiCircleRemove } from "react-icons/ci";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { UserState } from "../store/userSlice";
-import { getIsActive, getRefresh, TweetState } from "../store/tweetSlice";
+import { UserState } from "../../store/userSlice";
+import { getIsActive, getRefresh, TweetState } from "../../store/tweetSlice";
 import { ClipLoader } from "react-spinners";
-import default_profile from "../assets/default_profile.png";
+import default_profile from "../../assets/default_profile.png";
 
 const CreatePost = () => {
   const [description, setDescription] = useState("");
@@ -39,9 +39,9 @@ const CreatePost = () => {
   const createPostHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(!description) {
+    if (!description) {
       toast.error("Please provide description");
-      return ;
+      return;
     }
     setLoading(true);
     try {
@@ -166,10 +166,7 @@ const CreatePost = () => {
                     />
                   </label>
                 </div>
-                <button
-                  className="bg-[#1D98F0] px-4 py-1 border-none text-white rounded-full text-lg flex items-center justify-center"
-                  
-                >
+                <button className="bg-[#1D98F0] px-4 py-1 border-none text-white rounded-full text-lg flex items-center justify-center">
                   {loading ? (
                     <ClipLoader color={"#ffffff"} loading={true} size={20} />
                   ) : (

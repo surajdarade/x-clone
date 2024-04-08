@@ -104,14 +104,7 @@ const UpdateProfile = () => {
       >
         <div className="flex items-center gap-8 ml-20">
           <div className="w-11 h-11">
-            {user?.avatar ? (
-              <img
-                draggable="false"
-                className="w-full h-full rounded-full border object-cover"
-                src={user?.avatar}
-                alt="avatar"
-              />
-            ) : (
+            {avatarPreview ? (
               <img
                 draggable="false"
                 className="w-full h-full rounded-full border object-cover"
@@ -124,10 +117,17 @@ const UpdateProfile = () => {
                 }
                 alt="avatar"
               />
+            ) : (
+              <img
+                draggable="false"
+                className="w-full h-full rounded-full border object-cover"
+                src={user?.avatar}
+                alt="avatar"
+              />
             )}
           </div>
           <div className="flex flex-col gap-0">
-            <span className="text-xl">{username}</span>
+            <span className="text-xl">{user?.username}</span>
             <label
               onClick={() => avatarInput.current?.click()}
               className="text-sm font-medium text-blue-600 cursor-pointer"

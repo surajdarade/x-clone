@@ -1,9 +1,9 @@
 import CreatePost from "./CreatePost";
 import Tweet from "./Tweet";
-import { UserState } from "../store/userSlice";
+import { UserState } from "../../store/userSlice";
 import { useSelector } from "react-redux";
-import useGetMyTweets from "../hooks/useGetMyTweets";
-import { TweetState } from "../store/tweetSlice";
+import useGetMyTweets from "../../hooks/useGetMyTweets";
+import { TweetState } from "../../store/tweetSlice";
 import { Helmet } from "react-helmet";
 
 const Feed = () => {

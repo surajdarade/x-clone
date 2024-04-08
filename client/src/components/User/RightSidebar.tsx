@@ -1,14 +1,15 @@
 // import Avatar from "react-avatar";
 import { useSelector } from "react-redux";
-import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
-import useOtherUsers from "../hooks/useOtherUsers";
+import { getFollowUnfollowUpdate, UserState } from "../../store/userSlice";
+import useOtherUsers from "../../hooks/useOtherUsers";
 import { Link } from "react-router-dom";
-import { getRefresh } from "../store/tweetSlice";
+import { getRefresh } from "../../store/tweetSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import SearchBox from "./SearchBox";
-import default_profile from "../assets/default_profile.png";
+import default_profile from "../../assets/default_profile.png";
+import { MdVerified } from "react-icons/md";
 
 const RightSidebar = () => {
   const { user, otherUsers } = useSelector(
@@ -35,7 +36,6 @@ const RightSidebar = () => {
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
-        console.log(error);
       }
     } else {
       try {
@@ -49,7 +49,6 @@ const RightSidebar = () => {
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
-        console.log(error);
       }
     }
     // follow
@@ -78,9 +77,17 @@ const RightSidebar = () => {
                   <img src={default_profile} alt="profile" className="h-9" />
                 )}
                 <Link to={`/profile/${otherUser?._id}`} className="ml-2">
-                  <h1 className="font-semibold hover:underline md:-mt-1">
-                    {otherUser?.name}
-                  </h1>
+                  <div className="flex">
+                    <h1 className="font-semibold hover:underline md:-mt-1">
+                      {otherUser?.name}
+                    </h1>
+                    {otherUser?.name == "X" && (
+                      <MdVerified
+                        className="ml-1"
+                        style={{ color: "#D18800" }}
+                      />
+                    )}
+                  </div>
                   <p className="text-sm md:-mt-1">{`@${otherUser?.username}`}</p>
                 </Link>
               </div>

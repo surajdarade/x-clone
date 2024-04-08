@@ -1,19 +1,20 @@
 import { Link, useParams } from "react-router-dom";
-import banner from "../assets/banner.jpg";
+import banner from "../../assets/banner.jpg";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { getFollowUnfollowUpdate, UserState } from "../store/userSlice";
-import useGetProfile from "../hooks/useGetProfile";
+import { getFollowUnfollowUpdate, UserState } from "../../store/userSlice";
+import useGetProfile from "../../hooks/useGetProfile";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { getRefresh, TweetState } from "../store/tweetSlice";
-import default_profile from "../assets/default_profile.png";
+import { getRefresh, TweetState } from "../../store/tweetSlice";
+import default_profile from "../../assets/default_profile.png";
 import { IoLocationOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
-import joinedOn from "../utils/joinedOnFunction";
+import joinedOn from "../../utils/joinedOnFunction";
 import { Helmet } from "react-helmet";
 import Tweet from "./Tweet";
-import useGetProfileTweets from "../hooks/useGetProfileTweets";
+import useGetProfileTweets from "../../hooks/useGetProfileTweets";
+import { MdVerified } from "react-icons/md";
 
 const Profile = () => {
   const { user, profile } = useSelector(
@@ -42,7 +43,6 @@ const Profile = () => {
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
-        console.log(error);
       }
     } else {
       try {
@@ -56,7 +56,6 @@ const Profile = () => {
         toast.success(res.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
-        console.log(error);
       }
     }
     // follow
@@ -107,7 +106,6 @@ const Profile = () => {
             ) : (
               <img src={default_profile} alt="profile" className="h-28" />
             )}
-            {/* <img src={default_profile} alt="profile" className="h-28" /> */}
           </div>
           <div className="text-right m-4">
             {profile?._id == user?._id ? (
@@ -127,7 +125,16 @@ const Profile = () => {
             )}
           </div>
           <div className="m-4 mt-6">
-            <h1 className="font-semibold text-xl">{profile?.name}</h1>
+            <div className="flex">
+              <h1 className="font-semibold text-xl">{profile?.name}</h1>
+              {profile?.name == "X" && (
+                <MdVerified
+                  className="ml-1 mt-2"
+                  style={{ color: "#D18800" }}
+                />
+              )}
+            </div>
+
             <p className="text-gray-500 text-sm">{`@${profile?.username}`}</p>
           </div>
           <div className="m-4 text-sm">

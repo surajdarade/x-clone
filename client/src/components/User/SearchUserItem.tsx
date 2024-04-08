@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import default_profile from "../assets/default_profile.png";
+import default_profile from "../../assets/default_profile.png";
 
 interface User {
   _id: string;
