@@ -43,7 +43,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=1024" />{" "}
       </Helmet>
       <Toaster />
       <div className="flex justify-between w-[80%] mx-auto scroll-smooth">

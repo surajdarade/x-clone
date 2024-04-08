@@ -103,6 +103,7 @@ const SignInSignUp = () => {
     setUsername("");
     setEmail("");
     setPassword("");
+    setLoading(false);
   };
 
   const signInSignUpHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -113,6 +114,7 @@ const SignInSignUp = () => {
     <>
       <Helmet>
         <title>X. It's what's happening / X</title>
+        <meta name="viewport" content="width=1024" />
       </Helmet>
       <Toaster />
       <div className="w-screen h-screen flex items-center justify-center">
