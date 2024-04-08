@@ -12,7 +12,14 @@ const app = express();
 dotenv.config();
 
 // CORS POLICY
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://x-clone-surajdarade.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 
 app.use(express.json());
