@@ -17,7 +17,7 @@ const Bookmark = () => {
       <Helmet>
         <title>Bookmarks / X</title>
       </Helmet>
-      <Toaster />
+      {/* <Toaster /> */}
       {tweets?.length != 0 ? (
         <div className="w-[50%] border border-gray-20">
           <div>

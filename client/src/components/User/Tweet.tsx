@@ -6,7 +6,7 @@ import { getRefresh, UserDetails } from "../../store/tweetSlice";
 import axios from "axios";
 import { getBookmarks, UserState } from "../../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { MdDeleteOutline, MdVerified } from "react-icons/md";
 import timeSince from "../../utils/timeFunction";
 import { FcLike } from "react-icons/fc";
@@ -33,7 +33,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
   const likeOrDislikeHandler = async (_id: string) => {
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/api/v1/tweet/like/${_id}`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/like/${_id}`,
         { id: user?._id },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
   const bookmarkHandler = async (_id: string) => {
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/bookmark/${_id}`,
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/bookmark/${_id}`,
         { id: user?._id },
         { withCredentials: true }
       );
@@ -68,7 +68,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.delete(
-        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/v1/tweet/delete/${id}`
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/delete/${id}`
       );
       dispatch(getRefresh());
       if (res.data.success) {
@@ -81,7 +81,7 @@ const Tweet: React.FC<TweetProps> = ({ tweet }) => {
 
   return (
     <>
-      <Toaster />
+      {/* <Toaster /> */}
       <div className="border-b border-gray-300">
         <div>
           <div className="flex p-4">

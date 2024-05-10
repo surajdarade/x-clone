@@ -38,7 +38,7 @@ const UpdatePassword = () => {
         },
       };
       const res = await axios.put(
-        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/update/password`,
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/update/password`,
         { _id: user?._id, oldPassword, newPassword },
         config
       );
@@ -65,7 +65,7 @@ const UpdatePassword = () => {
       <Helmet>
         <title>Change your password / X</title>
       </Helmet>
-      <Toaster />
+      {/* <Toaster /> */}
       <form
         onSubmit={handlePasswordUpdate}
         className="flex flex-col gap-4 py-8 px-16 sm:w-3/4"

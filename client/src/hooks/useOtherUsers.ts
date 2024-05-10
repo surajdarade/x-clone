@@ -9,7 +9,7 @@ const useOtherUsers = (_id: string) => {
     const fetchOtherUsers = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/otherUsers/${_id}`,
+          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/otherUsers/${_id}`,
           { withCredentials: true }
         );
 

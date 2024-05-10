@@ -126,7 +126,7 @@ export const SignIn = async (req: Request, res: Response) => {
 export const Logout = (req: Request, res: Response) => {
   return res
     .cookie("token", "", { expires: new Date(Date.now()) })
-    .json({ message: "Logged out succefully!", success: true });
+    .json({ message: "Logged out successfully!", success: true });
 };
 
 // BOOKMARKS CONTROLLER

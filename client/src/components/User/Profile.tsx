@@ -34,7 +34,7 @@ const Profile = () => {
     if (user?.following.includes(id || "")) {
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/unfollow/${id}`,
+          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/unfollow/${id}`,
           { id: user?._id },
           { withCredentials: true }
         );
@@ -47,7 +47,7 @@ const Profile = () => {
     } else {
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/v1/user/follow/${id}`,
+          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/follow/${id}`,
           { id: user?._id },
           { withCredentials: true }
         );

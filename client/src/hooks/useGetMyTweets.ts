@@ -13,7 +13,7 @@ const useGetMyTweets = (_id: string) => {
   const fetchFollowingTweets = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/api/v1/tweet/followingTweets/${_id}`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/followingTweets/${_id}`,
         { withCredentials: true }
       );
       dispatch(getAllTweets(res.data.tweets));
@@ -25,7 +25,7 @@ const useGetMyTweets = (_id: string) => {
   const fetchMyTweets = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/api/v1/tweet/allTweets/${_id}`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/allTweets/${_id}`,
         { withCredentials: true }
       );
       dispatch(getAllTweets(res.data.tweets));

@@ -53,7 +53,7 @@ const CreatePost = () => {
       }
 
       const res = await axios.post(
-        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/tweet/create`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/create`,
         formData,
         { withCredentials: true }
       );
@@ -81,7 +81,7 @@ const CreatePost = () => {
 
   return (
     <>
-      <Toaster />
+      {/* <Toaster /> */}
       <form onSubmit={createPostHandler} encType="multipart/form-data">
         <div className="w-[100%]">
           <div>

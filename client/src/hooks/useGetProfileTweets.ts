@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +14,7 @@ const useGetProfileTweets = (_id: string) => {
   const fetchProfileTweets = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/api/v1/tweet/profileTweets/${_id}`,
+        `${import.meta.env.VITE_APP_TWEET_API_ENDPOINT}/profileTweets/${_id}`,
         { withCredentials: true }
       );
       dispatch(getAllTweets(res.data.tweets));

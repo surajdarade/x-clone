@@ -13,7 +13,7 @@ const useGetMyBookmarks = (_id: string) => {
   const fetchMyBookmarks = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/getMyBookmark/${_id}`,
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/getMyBookmark/${_id}`,
         { withCredentials: true }
       );
       dispatch(getAllTweets(res.data.tweets));

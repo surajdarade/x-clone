@@ -27,7 +27,7 @@ const RightSidebar = () => {
     if (user?.following.includes(otherUserId || "")) {
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/unfollow/${otherUserId}`,
+          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/unfollow/${otherUserId}`,
           { id: user?._id },
           { withCredentials: true }
         );
@@ -40,7 +40,7 @@ const RightSidebar = () => {
     } else {
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/v1/user/follow/${otherUserId}`,
+          `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/follow/${otherUserId}`,
           { id: user?._id },
           { withCredentials: true }
         );

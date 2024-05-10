@@ -56,7 +56,7 @@ const UpdateProfile = () => {
       axios.defaults.withCredentials = true;
 
       const res = await axios.put(
-        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/update/profile`,
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/update/profile`,
         { _id: user?._id, name, username, bio, email, avatar },
         config
       );
@@ -104,7 +104,7 @@ const UpdateProfile = () => {
       <Helmet>
         <title>Account information / X</title>
       </Helmet>
-      <Toaster />
+      {/* <Toaster /> */}
       <form
         onSubmit={handleUpdate}
         encType="multipart/form-data"

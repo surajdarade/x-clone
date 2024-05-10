@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import x from "../assets/x.png";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getUser } from "../store/userSlice";
@@ -116,7 +116,7 @@ const SignInSignUp = () => {
         <title>X. It's what's happening / X</title>
         <meta name="viewport" content="width=1024" />
       </Helmet>
-      <Toaster />
+      {/* <Toaster /> */}
       <div className="w-screen h-screen flex items-center justify-center">
         <div className="flex items-center justify-evenly w-[80%]">
           <div>

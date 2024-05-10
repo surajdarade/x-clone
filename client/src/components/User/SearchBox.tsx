@@ -21,7 +21,8 @@ const SearchBox: React.FC = () => {
   const fetchUsers = async (term: string) => {
     setLoading(true);
     const { data } = await axios.get(
-      `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/api/v1/user/users?keyword=${term}`, {withCredentials: true}
+      `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/users?keyword=${term}`,
+      { withCredentials: true }
     );
     setUsers(data.users);
     setLoading(false);

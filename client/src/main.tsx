@@ -13,6 +13,7 @@ import Bookmark from "./components/User/Bookmark.tsx";
 import UpdateProfile from "./components/User/Update/UpdateProfile.tsx";
 import Update from "./components/User/Update/Update.tsx";
 import UpdatePassword from "./components/User/Update/UpdatePassword.tsx";
+import { Toaster } from "react-hot-toast";
 
 const persistor = persistStore(store);
 
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
+    <Toaster />
     <PersistGate loading={null} persistor={persistor}>
       <RouterProvider router={router} />
     </PersistGate>
