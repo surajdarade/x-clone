@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 // Apply CORS middleware
 const corsOptions ={
-  origin:'http://localhost:5173', 
+  origin:'https://x-clone-surajdarade.vercel.app', 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
