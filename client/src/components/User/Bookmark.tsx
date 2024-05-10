@@ -1,6 +1,5 @@
 import { UserState } from "../../store/userSlice";
 import { useSelector } from "react-redux";
-import { Toaster } from "react-hot-toast";
 import Tweet from "./Tweet";
 import { TweetState } from "../../store/tweetSlice";
 import useGetMyBookmarks from "../../hooks/useGetMyBookmarks";

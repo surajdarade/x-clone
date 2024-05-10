@@ -29,7 +29,9 @@ const LeftSidebar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_APP_USER_API_ENDPOINT}/logout`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_USER_API_ENDPOINT}/logout`
+      );
 
       dispatch(userSliceReset());
       dispatch(tweetSliceReset());

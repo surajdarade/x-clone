@@ -2,7 +2,7 @@ import { useState } from "react";
 // import Avatar from "react-avatar";
 import { CiImageOn, CiCircleRemove } from "react-icons/ci";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { UserState } from "../../store/userSlice";
 import { getIsActive, getRefresh, TweetState } from "../../store/tweetSlice";

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { UserState } from "../../store/userSlice";
-import { Toaster } from "react-hot-toast";
 import useOtherUsers from "../../hooks/useOtherUsers";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
