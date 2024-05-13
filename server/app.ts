@@ -18,9 +18,18 @@ app.use(express.urlencoded({ extended: true }));
 // Parse cookies from incoming requests
 app.use(cookieParser());
 
+const allowedOrigins = [
+  'https://x-clone-surajdarade.vercel.app',
+  'https://x-clone-surajdarade.vercel.app/',
+  'https://x-clone-surajdarade.vercel.app/api/v1/user',
+  'https://x-clone-surajdarade.vercel.app/api/v1/user/',
+  'https://x-clone-surajdarade.vercel.app/api/v1/tweet',
+  'https://x-clone-surajdarade.vercel.app/api/v1/tweet/',
+]
+
 // Apply CORS middleware
 const corsOptions ={
-  origin:'https://x-clone-surajdarade.vercel.app', 
+  origin: allowedOrigins, 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
