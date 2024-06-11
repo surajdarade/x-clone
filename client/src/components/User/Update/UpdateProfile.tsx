@@ -105,7 +105,6 @@ const UpdateProfile = () => {
       <Helmet>
         <title>Account information / X</title>
       </Helmet>
-      {/* <Toaster /> */}
       <form
         onSubmit={handleUpdate}
         encType="multipart/form-data"
@@ -120,8 +119,8 @@ const UpdateProfile = () => {
                 src={
                   avatarPreview
                     ? avatarPreview
-                      ? avatarPreview
-                      : oldAvatar
+                    : avatarPreview
+                    ? oldAvatar
                     : default_profile
                 }
                 alt="avatar"
@@ -130,7 +129,7 @@ const UpdateProfile = () => {
               <img
                 draggable="false"
                 className="w-full h-full rounded-full border object-cover"
-                src={user?.avatar}
+                src={user?.avatar ? user?.avatar : default_profile}
                 alt="avatar"
               />
             )}

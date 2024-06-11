@@ -33,6 +33,7 @@ const SignInSignUp = () => {
           }
         );
         dispatch(getUser(res?.data?.user));
+        localStorage.setItem("token", res?.data?.token);
         if (res.data.success) {
           navigate("/");
           toast.success(res.data.message);

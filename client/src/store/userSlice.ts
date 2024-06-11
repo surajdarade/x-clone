@@ -4,6 +4,7 @@ export interface UserState {
   user: User | null;
   otherUsers: User[] | null;
   profile: User | null;
+  onlineUser: string[];
 }
 
 export interface User {
@@ -55,6 +56,7 @@ const initialState: UserState = {
   user: null,
   otherUsers: null,
   profile: null,
+  onlineUser: [],
 };
 
 const userSlice = createSlice({

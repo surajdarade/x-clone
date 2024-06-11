@@ -47,7 +47,6 @@ export const createTweet = async (
       .status(201)
       .json({ message: "Tweet posted successfully!", success: true });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Internal server error",
       success: false,
@@ -156,7 +155,6 @@ export const getFollowingTweets = async (req: Request, res: Response) => {
   }
 };
 
-
 // GET PROFILE TWEETS ONLY
 
 // GET FOLLOWING TWEETS ONLY
@@ -169,7 +167,9 @@ export const getProfileTweets = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const profileTweets = await TweetModel.find({ userId }).sort({ createdAt: -1 });
+    const profileTweets = await TweetModel.find({ userId }).sort({
+      createdAt: -1,
+    });
 
     return res.status(200).json({ tweets: profileTweets });
   } catch (error) {

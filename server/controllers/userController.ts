@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { UserModel } from "../models/userModel";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import path from "path";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+import mongoose, { AnyArray } from "mongoose";
 import { TweetModel } from "../models/tweetModel";
 import { deleteFile } from "../utils/awsFunctions";
 
@@ -114,6 +114,7 @@ export const SignIn = async (req: Request, res: Response) => {
       .json({
         message: `Welcome User @${user.username} !`,
         user,
+        token,
         success: true,
       });
   } catch (error) {
@@ -369,7 +370,7 @@ export const searchUsers = async (req: Request, res: Response) => {
 // UPDATE PROFILE
 
 export interface CustomFile extends File {
-  location?: string; 
+  location?: string;
 }
 
 export const updateProfile = async (
@@ -495,7 +496,6 @@ export const updatePassword = async (req: Request, res: Response) => {
       message: "Password Changed Successfully!",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

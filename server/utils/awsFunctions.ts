@@ -10,7 +10,14 @@ const s3Config = new S3Client({
     secretAccessKey: process.env.AWS_IAM_USER_SECRET!,
   },
 });
-// Configuration for avatar upload to S3
+
+const generateKey = (prefix: string, file: any) => {
+  const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+  const key = `${prefix}/${file.fieldname}_${uniqueSuffix}${path.extname(file.originalname)}`;
+  console.log(`Generated S3 Key: ${key}`);
+  return key;
+};
+
 const avatarS3Config = {
   s3: s3Config,
   bucket: process.env.AWS_BUCKET_NAME!,
@@ -19,19 +26,10 @@ const avatarS3Config = {
     cb(null, { fieldName: file.fieldname });
   },
   key: function (req: any, file: any, cb: any) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      "profiles/" +
-        file.fieldname +
-        "_" +
-        uniqueSuffix +
-        path.extname(file.originalname)
-    );
+    cb(null, generateKey("profiles", file));
   },
 };
 
-// Configuration for post upload to S3
 const postS3Config = {
   s3: s3Config,
   bucket: process.env.AWS_BUCKET_NAME!,
@@ -40,19 +38,10 @@ const postS3Config = {
     cb(null, { fieldName: file.fieldname });
   },
   key: function (req: any, file: any, cb: any) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      "posts/" +
-        file.fieldname +
-        "_" +
-        uniqueSuffix +
-        path.extname(file.originalname)
-    );
+    cb(null, generateKey("posts", file));
   },
 };
 
-// Middleware for uploading avatar to S3
 export const uploadAvatar = multer({
   storage: multerS3(avatarS3Config),
   limits: {
@@ -60,7 +49,6 @@ export const uploadAvatar = multer({
   },
 });
 
-// Middleware for uploading post to S3
 export const uploadPost = multer({
   storage: multerS3(postS3Config),
   limits: {
@@ -68,7 +56,6 @@ export const uploadPost = multer({
   },
 });
 
-// Function to delete file from S3
 export const deleteFile = async (fileuri: string) => {
   const fileKey = fileuri.split("/").slice(-2).join("/");
   const params = {

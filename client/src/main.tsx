@@ -44,7 +44,7 @@ const router = createBrowserRouter([
     path: "/account/edit",
     element: (
       <Update activeTab={0}>
-        <UpdateProfile></UpdateProfile>
+        <UpdateProfile />
       </Update>
     ),
   },
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         <UpdatePassword />
       </Update>
     ),
-  },
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
