@@ -397,7 +397,7 @@ export const updateProfile = async (
       $or: [{ email }, { username }],
     });
 
-    if (userExists && userExists._id.toString() !== _id.toString()) {
+    if (userExists && userExists?._id?.toString() !== _id.toString()) {
       return res.status(404).json({
         success: false,
         message: "User Already Exists!",
